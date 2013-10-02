@@ -11,17 +11,17 @@
 
 @font-face {
     font-family: OpenSans-Italic;
-    src: url("../fonts/OpenSans-Italic.ttf");
+    src: url("../lib/open-sans/OpenSans-Italic.ttf");
 }
 
 @font-face {
     font-family: OpenSans-Regular;
-    src: url("../fonts/OpenSans-Regular.ttf");
+    src: url("../lib/open-sans/OpenSans-Regular.ttf");
 }
 
 @font-face {
     font-family: OpenSans-SemiboldItalic;
-    src: url("../fonts/OpenSans-SemiboldItalic.ttf");
+    src: url("../lib/open-sans/OpenSans-SemiboldItalic.ttf");
 }
 
 /* Color classes */

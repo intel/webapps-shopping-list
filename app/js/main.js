@@ -62,7 +62,7 @@ var HARDWARE = 1;
                            "ontouchend='ShoppingListApp.clearLongPressTimeout()'" +
                            "ontouchmove='ShoppingListApp.clearLongPressTimeout()'" +
                            "ontouchcancel='ShoppingListApp.clearLongPressTimeout()'>" +
-                       "<div class='activelistinfopane'>" + 
+                       "<div class='activelistinfopane'>" +
                            "<div class='activelistitemcount'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
                            "<div class='activelistname'>" + item.name + "</div>" +
                        "</div>" +
@@ -74,7 +74,7 @@ var HARDWARE = 1;
         self.populateViewAllActiveListPane = function(item) {
             return "<div class='activelistnarrow green_2'" +
                            "onclick='ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY)'>" +
-                       "<div class='activelistinfopane'>" + 
+                       "<div class='activelistinfopane'>" +
                           "<div class='activelistitemcount'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
                           "<div class='activelistname'>" + Localizer.getTranslation("view_all") + "</div>" +
                        "</div>" +
@@ -155,7 +155,7 @@ var HARDWARE = 1;
                            "<div class='itemstore'>" + item.store + "</div>" +
                            "<div class='itemtype'>" + item.type + "</div>" +
                        "</div>" +
-                       "<img src='" + item.image + "' />" + 
+                       "<img src='" + item.image + "' />" +
                        "<div class='favoritestate " + itemisfavoriteclass + "' onclick ='MyListsView.onMyListsItemIsFavoriteClicked(this, \"" + item._id + "\")'></div>" +
                    "</div>";
         };
@@ -219,7 +219,7 @@ var HARDWARE = 1;
                            "ontouchmove='ShoppingListApp.clearLongPressTimeout()'" +
                            "ontouchcancel='ShoppingListApp.clearLongPressTimeout()'" +
                            "onclick='ShoppingListApp.onListOfListsRowClicked(\"" + escape(item.name) + "\")'>" +
-                       "<div class='activelistinfopane'>" + 
+                       "<div class='activelistinfopane'>" +
                            "<div class='activelistitemcount'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
                            "<div class='activelistname'>" + item.name + "</div>" +
                        "</div>" +
@@ -231,7 +231,7 @@ var HARDWARE = 1;
         self.populateViewAllActiveListPane = function(item) {
             return "<div class='activelistnarrow green_2'" +
                            "onclick='ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY)'>" +
-                       "<div class='activelistinfopane'>" + 
+                       "<div class='activelistinfopane'>" +
                           "<div class='activelistitemcount'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
                           "<div class='activelistname'>" + Localizer.getTranslation("view_all") + "</div>" +
                        "</div>" +
@@ -313,11 +313,11 @@ var HARDWARE = 1;
                            "<div class='itemstore'>" + item.store + "</div>" +
                            "<div class='itemtype'>" + item.type + "</div>" +
                        "</div>" +
-                       "<img src='" + item.image + "' />" + 
+                       "<img src='" + item.image + "' />" +
                        "<div class='favoritestate " + itemisfavoriteclass + "' onclick ='MyStoresView.onMyStoresItemIsFavoriteClicked(this, \"" + item._id + "\")'></div>" +
                    "</div>";
         };
-        
+
         self.onMyStoresItemClicked = function(element, id) {
             ShoppingListApp.buttonClick02Audio.play();
 
@@ -327,12 +327,12 @@ var HARDWARE = 1;
             }
             ShoppingListApp.DBManager.updateItemBought(id, (element.getAttribute("class") == "boughtstate itembought") ? 0 : 1, self.updateItemBoughtCallback);
         };
-        
+
         self.updateItemBoughtCallback = function(result) {
             self.populateListOfLists();
             self.populateCurrentList();
         };
-        
+
         self.onMyStoresItemIsFavoriteClicked = function(element, id) {
             ShoppingListApp.buttonClick03Audio.play();
 
@@ -377,7 +377,7 @@ var HARDWARE = 1;
                            "ontouchend='ShoppingListApp.clearLongPressTimeout()'" +
                            "ontouchmove='ShoppingListApp.clearLongPressTimeout()'" +
                            "ontouchcancel='ShoppingListApp.clearLongPressTimeout()'>" +
-                       "<div class='activelistinfopane'>" + 
+                       "<div class='activelistinfopane'>" +
                            "<div class='activelistitemcount'>" + item.totalcount + "</div>" +
                            "<div class='activelistname'>" + item.name + "</div>" +
                        "</div>" +
@@ -388,7 +388,7 @@ var HARDWARE = 1;
         self.populateAllMyFavoritesActiveListPane = function(item) {
             return "<div class='activelistwide green_2'" +
                            "onclick='ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY)'>" +
-                       "<div class='activelistinfopane'>" + 
+                       "<div class='activelistinfopane'>" +
                           "<div class='activelistitemcount'>" + item.totalcount + "</div>" +
                           "<div class='activelistname'>" + Localizer.getTranslation("all_my_favorites") + "</div>" +
                        "</div>" +
@@ -457,7 +457,7 @@ var HARDWARE = 1;
 
             return "<div class='listitem'>" +
                        itemlistindicator +
-                       "<div class='" + textpane + "'" + "onmousedown='ShoppingListApp.onMouseDownOnItem(\"" + item._id + "\", \"" + escape(item.name) + "\")'" + 
+                       "<div class='" + textpane + "'" + "onmousedown='ShoppingListApp.onMouseDownOnItem(\"" + item._id + "\", \"" + escape(item.name) + "\")'" +
                                    "onmouseup='ShoppingListApp.clearLongPressTimeout()'" +
                                    "onmouseout='ShoppingListApp.clearLongPressTimeout()'" +
                                    "ontouchstart='ShoppingListApp.onMouseDownOnItem(\"" + item._id + "\", \"" + escape(item.name) + "\")'" +
@@ -468,7 +468,7 @@ var HARDWARE = 1;
                            "<div class='itemstore'>" + item.store + "</div>" +
                            "<div class='itemtype'>" + item.type + "</div>" +
                        "</div>" +
-                        "<img src='" + item.image + "' />" + 
+                        "<img src='" + item.image + "' />" +
                         "<div class='favoritestate " + itemisfavoriteclass + "' onclick ='MyFavoritesView.onMyFavoritesItemIsFavoriteClicked(this, \"" + item._id + "\")'>" +
                    "</div>";
         };
@@ -527,7 +527,7 @@ var HARDWARE = 1;
         };
 
         self.renderCurrentListHeading = function(item) {
-            return self.renderCurrentListHeadingBase((item.store == "") ? Localizer.getTranslation("no_store") : item.store); 
+            return self.renderCurrentListHeadingBase((item.store == "") ? Localizer.getTranslation("no_store") : item.store);
         };
 
         return self;
@@ -541,7 +541,7 @@ var HARDWARE = 1;
         };
 
         self.renderCurrentListHeading = function(item) {
-            return self.renderCurrentListHeadingBase((item.type == "") ? Localizer.getTranslation("no_type") : item.type); 
+            return self.renderCurrentListHeadingBase((item.type == "") ? Localizer.getTranslation("no_type") : item.type);
         };
 
         return self;
@@ -563,7 +563,7 @@ var HARDWARE = 1;
 
     ShoppingListApp = new function() {
         var self = this;
-        
+
         // Init the application when the OnLoad event is received.
         //
         self.initOnLoad = function() {
@@ -614,7 +614,7 @@ var HARDWARE = 1;
 
             self.setOrientation();
             self.transitionTo(MyListsView);
-            
+
             window.localStorage.removeItem( "videoStreamUrl" );
             FileSystem.initialize();
         };
@@ -624,8 +624,8 @@ var HARDWARE = 1;
             ShoppingListApp.currentKey = name;
             ShoppingListApp.updateListOfLists();
             ShoppingListApp.updateCurrentList();
-        };        
-        
+        };
+
         // Transition into the view given as an argument.
         //
         self.transitionTo = function(view) {
@@ -722,7 +722,7 @@ var HARDWARE = 1;
             self.currentView.populateListOfLists();
             self.currentView.populateCurrentList();
         };
-        
+
         // Handle longtap for lists
         //
         self.onMouseDownOnList = function(listName, listColor) {
@@ -762,12 +762,12 @@ var HARDWARE = 1;
             self.selectedStoreName = unescape(storeName);
             self.pressTimer = window.setTimeout(ShoppingListApp.openStoreOptions, 1000);
         };
-        
+
         self.openStoreOptions = function() {
             clearTimeout(self.pressTimer);
             showStoreOptions(self.handleStoreOption, self.selectedStoreName);
-        };        
-        
+        };
+
         self.handleListOption = function(option) {
             switch(option) {
             case 1:
@@ -802,17 +802,17 @@ var HARDWARE = 1;
             default:
               break;
             }
-            
+
             self.updateListOfLists();
             self.updateCurrentList();
         };
-        
+
         self.deleteItemsFromList = function() {
             self.DBManager.deleteAllItemsFromList(self.selectedListName);
             self.updateListOfLists();
             self.updateCurrentList();
         };
-        
+
         self.deleteItemsAndList = function() {
             self.DBManager.deleteAllItemsFromList(self.selectedListName);
             self.DBManager.deleteList(self.selectedListName);
@@ -820,7 +820,7 @@ var HARDWARE = 1;
             self.updateListOfLists();
             self.updateCurrentList();
         };
-        
+
         self.handleItemOption = function(option) {
             switch(option) {
             case 1:
@@ -843,7 +843,7 @@ var HARDWARE = 1;
             default:
               break;
             }
-            
+
             // Update UI
             self.updateListOfLists();
             self.updateCurrentList();
@@ -854,7 +854,7 @@ var HARDWARE = 1;
             self.updateListOfLists();
             self.updateCurrentList();
         };
-        
+
         self.handleStoreOption = function(option) {
             switch(option) {
             case 1:
@@ -885,7 +885,7 @@ var HARDWARE = 1;
             default:
               break;
             }
-            
+
             // Update UI
             self.updateListOfLists();
             self.updateCurrentList();
@@ -896,20 +896,20 @@ var HARDWARE = 1;
             self.updateListOfLists();
             self.updateCurrentList();
         };
-        
+
         self.deleteStore = function() {
             // First set no store to all those items in the store
             self.DBManager.updateItemsStoreName(
                     "No store",
                     self.selectedStoreName);
-            
+
             // Then Delete the store
             self.DBManager.deleteStore(self.selectedStoreName);
-            
+
             self.updateListOfLists();
             self.updateCurrentList();
         };
-        
+
         self.handleSortOption = function(option) {
             self.setSortOption(option);
             self.updateCurrentList();
@@ -942,7 +942,7 @@ var HARDWARE = 1;
             self.updateListOfLists();
             self.updateCurrentList();
         };
-        
+
         self.moveSelectedItemTo = function(newListName, color) {
             ShoppingListApp.DBManager.updateSingleItemListName(
                     newListName,
@@ -958,7 +958,7 @@ var HARDWARE = 1;
             self.updateListOfLists();
             self.updateCurrentList();
         };
-        
+
         // Update the list of lists of the current view.
         //
         self.updateListOfLists = function() {
@@ -1031,10 +1031,10 @@ var HARDWARE = 1;
             }
             return (key != 13);
         };
-        
+
         self.setOrientation = function() {
             var orientation = window.orientation;
-            
+
             switch(orientation) {
               case 0:
                   // portrait mode
@@ -1046,7 +1046,7 @@ var HARDWARE = 1;
                   document.getElementById('shadow').style.height = '1280px';
                   document.getElementById('shadow').style.width = '720px';
                   break;
-                 
+
               case 90: // landscape mode, screen turned to the left
               case -90: // landscape mode, screen turned to the right
                   document.getElementById('sl_style').href='css/sl_landscape.css';
@@ -1055,13 +1055,13 @@ var HARDWARE = 1;
                   document.getElementById('favorites_view_style').href='css/addfromfavorites_view_landscape.css';
                   document.getElementById('photofullscreen_view_style').href='css/photofullscreen_view_landscape.css';
                   document.getElementById('shadow').style.height = '720px';
-                  document.getElementById('shadow').style.width = '1280px';                  
+                  document.getElementById('shadow').style.width = '1280px';
                   break;
             }
 
             self.listoflistsscroll.refresh();
             self.currentlistscroll.refresh();
-            
+
             if(editListScreen) {
                 editListScreen.updateColorLabel();
             }
@@ -1072,19 +1072,19 @@ var HARDWARE = 1;
             if(currentSortbyDialog) {
                 currentSortbyDialog.updateStyles();
             }
-            
+
             if(currentOptionsDialog) {
                 currentOptionsDialog.updateStyles();
             }
-            
+
             if(currentInfoDialog) {
                 currentInfoDialog.updateStyles();
             }
-            
+
             if(currentAddStoreDialog) {
                 currentAddStoreDialog.updateStyles();
             }
-            
+
             if(currentPhotoFullScreenView) {
                 currentPhotoFullScreenView.updateStyles();
             }
