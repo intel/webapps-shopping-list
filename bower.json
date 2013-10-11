@@ -9,6 +9,8 @@
   "dependencies": {
     "jquery": "~2.0.3",
     "iscroll": "4.2.5",
-    "open-sans": "http://www.fontsquirrel.com/fonts/download/open-sans"
+    "open-sans": "http://themes.googleusercontent.com/static/fonts/opensans/v6/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff",
+    "open-sans-italic": "http://themes.googleusercontent.com/static/fonts/opensans/v6/xjAJXh38I15wypJXxuGMBobN6UDyHWBl620a-IRfuBk.woff",
+    "open-sans-semibold-italic": "http://themes.googleusercontent.com/static/fonts/opensans/v6/PRmiXeptR36kaC0GEAetxn5HxGBcBvicCpTp6spHfNo.woff"
   }
 }
