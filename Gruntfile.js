@@ -52,8 +52,7 @@ module.exports = function (grunt) {
           'build/app/js/scaleBody.js': ['app/js/scaleBody.js'],
           'build/app/js/SortbyDialog.js': ['app/js/SortbyDialog.js'],
           'build/app/js/StoreSelectionDialog.js': ['app/js/StoreSelectionDialog.js'],
-          'build/app/js/tizenapplicationservice.js': ['app/js/tizenapplicationservice.js'],
-          'build/app/js/scaleBody.js': ['app/js/scaleBody.js']
+          'build/app/js/tizenapplicationservice.js': ['app/js/tizenapplicationservice.js']
         }
       }
     },
