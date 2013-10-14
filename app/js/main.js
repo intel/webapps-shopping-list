@@ -1317,10 +1317,15 @@ var HARDWARE = 1;
         };
 
         self.setOrientation = function() {
-            var orientation = window.orientation;
+            var clientHeight = document.documentElement.clientHeight;
+            var clientWidth = document.documentElement.clientWidth;
+
+            var orientation = (clientHeight > clientWidth ?
+                               'portrait' :
+                               'landscape');
 
             switch(orientation) {
-              case 0:
+              case 'portrait':
                   // portrait mode
                   document.getElementById('sl_style').href='css/sl_portrait.css';
                   document.getElementById('editlist_view_style').href='css/editlist_view_portrait.css';
@@ -1331,8 +1336,7 @@ var HARDWARE = 1;
                   document.getElementById('shadow').style.width = '720px';
                   break;
 
-              case 90: // landscape mode, screen turned to the left
-              case -90: // landscape mode, screen turned to the right
+              case 'landscape': // landscape mode
                   document.getElementById('sl_style').href='css/sl_landscape.css';
                   document.getElementById('editlist_view_style').href='css/editlist_view_landscape.css';
                   document.getElementById('edititem_view_style').href='css/edititem_view_landscape.css';
@@ -1374,35 +1378,11 @@ var HARDWARE = 1;
             }
         };
 
-        // register for the orientation event changes
-        //
-        if('onorientationchange' in window)
-        {
-            window.onorientationchange = function() {
-                self.setOrientation();
-            };
-        }
-        else
-        {
-            window.onresize = function() {
-                if($(window).height() > $(window).width())
-                {
-                    window.orientation = 0;
-                }
-                else
-                {
-                    window.orientation = 90;
-                }
-                self.setOrientation();
-            }
-            if($(window).height() > $(window).width())
-            {
-                window.orientation = 0;
-            }
-            else
-            {
-                window.orientation = 90;
-            }
+        // register for the orientation event changes;
+        // NB we use onresize as onorientationchange isn't fired
+        // by Crosswalk
+        window.onresize = function() {
+            self.setOrientation();
         }
 
         self.createDB();
