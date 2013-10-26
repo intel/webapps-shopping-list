@@ -11,7 +11,7 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     packageInfo: grunt.file.readJSON('package.json'),
-    chromeInfo: grunt.file.readJSON('data/manifest.json'),
+    chromeInfo: grunt.file.readJSON('data/chrome-crx/manifest.json'),
 
     clean: ['build'],
 
@@ -20,9 +20,9 @@ module.exports = function (grunt) {
       // (default: '/tmp')
       tizenAppScriptDir: '/home/developer/',
 
-      // path to the config.xml file for the Tizen wgt file
+      // path to the config.xml file for the Tizen wgt file - post templating
       // (default: 'config.xml')
-      configFile: 'data/config.xml',
+      configFile: 'build/wgt/config.xml',
 
       // path to the sdb command (default: process.env.SDB or 'sdb')
       sdbCmd: 'sdb'
@@ -31,57 +31,18 @@ module.exports = function (grunt) {
     // minify JS
     uglify: {
       dist: {
-        files: {
-          'build/app/js/main.js': ['app/js/main.js'],
-          'build/app/js/AddFromFavoritesView.js': ['app/js/AddFromFavoritesView.js'],
-          'build/app/js/AddStoreDialog.js': ['app/js/AddStoreDialog.js'],
-          'build/app/js/dbmanager.js': ['app/js/dbmanager.js'],
-          'build/app/js/EditItemScreen.js': ['app/js/EditItemScreen.js'],
-          'build/app/js/EditListScreen.js': ['app/js/EditListScreen.js'],
-          'build/app/js/en_default.js': ['app/js/en_default.js'],
-          'build/app/js/FileSystem.js': ['app/js/FileSystem.js'],
-          'build/app/js/helper.js': ['app/js/helper.js'],
-          'build/app/js/help.js': ['app/js/help.js'],
-          'build/app/js/InfoDialog.js': ['app/js/InfoDialog.js'],
-          'build/app/js/license.js': ['app/js/license.js'],
-          'build/app/js/ListSelectionDialog.js': ['app/js/ListSelectionDialog.js'],
-          'build/app/js/Localizer.js': ['app/js/Localizer.js'],
-          'build/app/js/main.js': ['app/js/main.js'],
-          'build/app/js/OptionsDialog.js': ['app/js/OptionsDialog.js'],
-          'build/app/js/PhotoFullScreenView.js': ['app/js/PhotoFullScreenView.js'],
-          'build/app/js/scaleBody.js': ['app/js/scaleBody.js'],
-          'build/app/js/SortbyDialog.js': ['app/js/SortbyDialog.js'],
-          'build/app/js/StoreSelectionDialog.js': ['app/js/StoreSelectionDialog.js'],
-          'build/app/js/tizenapplicationservice.js': ['app/js/tizenapplicationservice.js']
-        }
+        files: [
+          { expand: true, cwd: '.', src: 'app/js/**/*.js', dest: 'build/' }
+        ]
       }
     },
 
     // minify CSS
     cssmin: {
       dist: {
-        files: {
-
-          'build/app/css/addfromfavorites_view_common.css': ['app/css/addfromfavorites_view_common.css'],
-          'build/app/css/addfromfavorites_view_landscape.css': ['app/css/addfromfavorites_view_landscape.css'],
-          'build/app/css/addfromfavorites_view_portrait.css': ['app/css/addfromfavorites_view_portrait.css'],
-          'build/app/css/addstore_dialog.css': ['app/css/addstore_dialog.css'],
-          'build/app/css/edititem_view_common.css': ['app/css/edititem_view_common.css'],
-          'build/app/css/edititem_view_landscape.css': ['app/css/edititem_view_landscape.css'],
-          'build/app/css/edititem_view_portrait.css': ['app/css/edititem_view_portrait.css'],
-          'build/app/css/editlist_view_common.css': ['app/css/editlist_view_common.css'],
-          'build/app/css/editlist_view_landscape.css': ['app/css/editlist_view_landscape.css'],
-          'build/app/css/editlist_view_portrait.css': ['app/css/editlist_view_portrait.css'],
-          'build/app/css/info_dialog.css': ['app/css/info_dialog.css'],
-          'build/app/css/listselection_dialog.css': ['app/css/listselection_dialog.css'],
-          'build/app/css/options_dialog.css': ['app/css/options_dialog.css'],
-          'build/app/css/photofullscreen_view_common.css': ['app/css/photofullscreen_view_common.css'],
-          'build/app/css/photofullscreen_view_landscape.css': ['app/css/photofullscreen_view_landscape.css'],
-          'build/app/css/photofullscreen_view_portrait.css': ['app/css/photofullscreen_view_portrait.css'],
-          'build/app/css/sl_landscape.css': ['app/css/sl_landscape.css'],
-          'build/app/css/sl_portrait.css': ['app/css/sl_portrait.css'],
-          'build/app/css/ui_common.css': ['app/css/ui_common.css']
-        }
+        files: [
+          { expand: true, cwd: '.', src: ['app/css/**/*.css'], dest: 'build/' }
+        ]
       }
     },
 
@@ -90,32 +51,86 @@ module.exports = function (grunt) {
         files: [
           { expand: true, cwd: '.', src: ['app/lib/**'], dest: 'build/' },
           { expand: true, cwd: '.', src: ['app/audio/**'], dest: 'build/' },
+          { expand: true, cwd: '.', src: ['app/data/**'], dest: 'build/' },
+          { expand: true, cwd: '.', src: ['app/README.txt'], dest: 'build/' },
           { expand: true, cwd: '.', src: ['LICENSE'], dest: 'build/app/' },
-          { expand: true, cwd: '.', src: ['README.txt'], dest: 'build/app/' },
           { expand: true, cwd: '.', src: ['app/_locales/**'], dest: 'build/' }
         ]
       },
+
       wgt: {
         files: [
           { expand: true, cwd: 'build/app/', src: ['**'], dest: 'build/wgt/' },
-          { expand: true, cwd: 'data/', src: ['config.xml'], dest: 'build/wgt/' },
           { expand: true, cwd: '.', src: ['icon_128.png'], dest: 'build/wgt/' }
         ]
       },
+
+      wgt_config: {
+        files: [
+          { expand: true, cwd: 'data/tizen-wgt/', src: ['config.xml'], dest: 'build/wgt/' }
+        ],
+        options:
+        {
+          processContent: function(content, srcpath)
+          {
+            return grunt.template.process(content);
+          }
+        }
+      },
+
       crx: {
         files: [
           { expand: true, cwd: 'build/app/', src: ['**'], dest: 'build/crx/' },
-          { expand: true, cwd: '.', src: ['manifest.json'], dest: 'build/crx/' },
           { expand: true, cwd: '.', src: ['icon*.png'], dest: 'build/crx/' }
         ]
       },
+
+      crx_manifest:
+      {
+        files: [
+          { expand: true, cwd: 'data/chrome-crx/', src: ['manifest.json'], dest: 'build/crx/' }
+        ],
+
+        options:
+        {
+          processContent: function(content, srcpath)
+          {
+            return grunt.template.process(content);
+          }
+        }
+
+      },
+
+      xpk: {
+        files: [
+          { expand: true, cwd: 'build/app/', src: ['**'], dest: 'build/xpk/' },
+          { expand: true, cwd: '.', src: ['icon*.png'], dest: 'build/xpk/' }
+        ]
+      },
+
+      xpk_manifest:
+      {
+        files: [
+          { expand: true, cwd: 'data/tizen-xpk/', src: ['manifest.json'], dest: 'build/xpk/' }
+        ],
+
+        options:
+        {
+          processContent: function(content, srcpath)
+          {
+            return grunt.template.process(content);
+          }
+        }
+
+      },
+
       sdk: {
         files: [
           { expand: true, cwd: 'build/app/', src: ['**'], dest: 'build/sdk/' },
           { expand: true, cwd: 'app/', src: ['js/**'], dest: 'build/sdk/' },
           { expand: true, cwd: 'app/', src: ['css/**'], dest: 'build/sdk/' },
           { expand: true, cwd: 'app/', src: ['*.html'], dest: 'build/sdk/' },
-          { expand: true, cwd: 'data/', src: ['config.xml'], dest: 'build/sdk/' },
+          { expand: true, cwd: 'data/tizen-wgt/', src: ['config.xml'], dest: 'build/sdk/' },
           { expand: true, cwd: '.', src: ['icon*.png'], dest: 'build/sdk/' }
         ]
       }
@@ -188,7 +203,7 @@ module.exports = function (grunt) {
       install: {
         action: 'install',
         remoteFiles: {
-          pattern: '/home/developer/ShoppingList*.wgt',
+          pattern: '/home/developer/<%= packageInfo.name %>*.wgt',
           filter: 'latest'
         }
       },
@@ -225,14 +240,15 @@ module.exports = function (grunt) {
     'copy:common'
   ]);
 
-  grunt.registerTask('crx', ['dist', 'copy:crx']);
-  grunt.registerTask('wgt', ['dist', 'copy:wgt', 'package:wgt']);
-
+  grunt.registerTask('crx', ['dist', 'copy:crx', 'copy:crx_manifest']);
+  grunt.registerTask('wgt', ['dist', 'copy:wgt', 'copy:wgt_config', 'package:wgt']);
+  grunt.registerTask('xpk', ['dist', 'copy:xpk', 'copy:xpk_manifest']);
   grunt.registerTask('sdk', [
     'clean',
     'imagemin:dist',
     'copy:common',
     'copy:sdk',
+    'copy:wgt_config',
     'package:sdk'
   ]);
 
@@ -241,6 +257,7 @@ module.exports = function (grunt) {
     'uglify:perf',
     'inline',
     'copy:wgt',
+    'copy:wgt_config',
     'package:wgt'
   ]);
 
