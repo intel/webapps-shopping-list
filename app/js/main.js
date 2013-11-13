@@ -53,34 +53,99 @@ var HARDWARE = 1;
         };
 
         self.populateActiveListPaneMain = function(item) {
-            return "<div class='activelistnarrow " + item.color + "'" +
-                           "onclick='ShoppingListApp.onListOfListsRowClicked(\"" + escape(item.name) + "\")'" +
-                           "onmousedown='ShoppingListApp.onMouseDownOnList(\"" + escape(item.name) + "\", \"" + item.color + "\")'" +
-                           "onmouseup='ShoppingListApp.clearLongPressTimeout()'" +
-                           "onmouseout='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchstart='ShoppingListApp.onMouseDownOnList(\"" + escape(item.name) + "\", \"" + item.color + "\")'" +
-                           "ontouchend='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchmove='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchcancel='ShoppingListApp.clearLongPressTimeout()'>" +
+            var retVal =
+            {
+                innerHTML :
+                    "<div class='activelistnarrow " + item.color + "'>" +
                        "<div class='activelistinfopane'>" +
                            "<div class='activelistitemcount'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
                            "<div class='activelistname'>" + item.name + "</div>" +
                        "</div>" +
-                       "<div class='activelistbutton' onclick='MyListSelectionDialog.showListSelectionDialog(ShoppingListApp.activelistSelectedCallback, true)'></div>" +
+                       "<div class='activelistbutton'></div>" +
                    "</div>" +
-                   "<button id='activelistaddnewlistbutton' class='shoppinglistbutton' onclick='editListScreen.show(VIEW_MODE.NEW)'></button>";
+                   "<button id='activelistaddnewlistbutton' class='shoppinglistbutton'></button>",
+                handlerMap : {
+                    'div.activelistnarrow' : {
+                        'click' : function() {
+                            console.log("MAXMAXMAX");
+                            ShoppingListApp.onListOfListsRowClicked(escape(item.name));
+                        },
+                        'mousedown' : function() {
+                            console.log("MAXMAXMAX");
+                            ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
+                        },
+                        'mouseup' : function() {
+                            console.log("MAXMAXMAX");
+                            ShoppingListApp.clearLongPressTimeout();
+                        },
+                        'mouseout' : function() {
+                            console.log("MAXMAXMAX");
+                            ShoppingListApp.clearLongPressTimeout();
+                        },
+                        'touchstart' : function() {
+                            console.log("MAXMAXMAX");
+                            ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
+                        },
+                        'touchend' : function() {
+                            console.log("MAXMAXMAX");
+                            ShoppingListApp.clearLongPressTimeout();
+                        },
+                        'touchmove' : function() {
+                            console.log("MAXMAXMAX");
+                            ShoppingListApp.clearLongPressTimeout();
+                        },
+                        'touchcancel' : function() {
+                            console.log("MAXMAXMAX");
+                            ShoppingListApp.clearLongPressTimeout();
+                        }
+                    },
+                    'div.activelistbutton' : {
+                        'click' : function() {
+                            console.log("MAXMAXMAX");
+                            MyListSelectionDialog.showListSelectionDialog(ShoppingListApp.activelistSelectedCallback, true);
+                       }
+                    },
+                    '#activelistaddnewlistbutton' : {
+                        'click' : function() {
+                            console.log("MAXMAXMAX");
+                            editListScreen.show(VIEW_MODE.NEW);
+                        }
+                    }
+                }
+            };
+
+            console.log("MAXMAXMAX");
+
+            return retVal;
         };
 
         self.populateViewAllActiveListPane = function(item) {
-            return "<div class='activelistnarrow green_2'" +
-                           "onclick='ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY)'>" +
+            console.log("MAXMAXMAX:self.populateViewAllActiveListPane");
+            var retVal = {
+                innerHTML :
+                   "<div class='activelistnarrow green_2'>" +
                        "<div class='activelistinfopane'>" +
                           "<div class='activelistitemcount'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
                           "<div class='activelistname'>" + Localizer.getTranslation("view_all") + "</div>" +
                        "</div>" +
-                       "<div class='activelistbutton' onclick='MyListSelectionDialog.showListSelectionDialog(ShoppingListApp.activelistSelectedCallback, true)'></div>" +
+                       "<div class='activelistbutton'></div>" +
                    "</div>" +
-                   "<button id='activelistaddnewlistbutton' class='shoppinglistbutton' onclick='editListScreen.show(VIEW_MODE.NEW)'></button>";
+                   "<button id='activelistaddnewlistbutton' class='shoppinglistbutton'></button>",
+                addHandlers : function(parent) {
+                    $(parent)
+                        .on('click','div.activelistnarrow',function() {
+                           ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
+                        })
+                        .on('click','div.activelistbutton',function() {
+                            MyListSelectionDialog.showListSelectionDialog(ShoppingListApp.activelistSelectedCallback, true);
+                        })
+                        .on('click','#activelistaddnewlistbutton',function() {
+                            editListScreen.show(VIEW_MODE.NEW);
+                        });
+                }
+            };
+
+            return retVal;
         };
 
         self.getOptionsPaneParameters = function() {
@@ -101,32 +166,69 @@ var HARDWARE = 1;
         };
 
         self.renderListOfListsItemMain = function(item) {
+            console.log("MAXMAXMAX:self.renderListOfListsItemMain");
             var itemcountclass = (ShoppingListApp.currentKey === item.name) ? "listitemcount_selected" : "";
             var itemnameclass = (ShoppingListApp.currentKey === item.name) ? "listitemname_selected" : "";
 
-            return "<div class='listoflistsrow " + item.color + "'" +
-                           "onclick='ShoppingListApp.onListOfListsRowClicked(\"" + escape(item.name) + "\")'" +
-                           "onmousedown='ShoppingListApp.onMouseDownOnList(\"" + escape(item.name) + "\", \"" + item.color + "\")'" +
-                           "onmouseup='ShoppingListApp.clearLongPressTimeout()'" +
-                           "onmouseout='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchstart='ShoppingListApp.onMouseDownOnList(\"" + escape(item.name) + "\", \"" + item.color + "\")'" +
-                           "ontouchend='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchmove='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchcancel='ShoppingListApp.clearLongPressTimeout()'>" +
+            var retVal = {
+                innerHTML :
+                    "<div class='listoflistsrow " + item.color + "'>" +
                        "<div class='listoflistsitemcount " + itemcountclass + "'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
                        "<div class='listoflistsname " + itemnameclass + "'>" + item.name + "</div>" +
-                   "</div>";
+                   "</div>",
+                addHandlers : function(parent) {
+                    $(parent)
+                        .on({
+                            'click':function() {
+                               ShoppingListApp.onListOfListsRowClicked(escape(item.name));
+                            },
+                            'mousedown':function() {
+                                ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
+                            },
+                            'mouseup':function() {
+                                ShoppingListApp.clearLongPressTimeout();
+                            },
+                            'mouseout':function() {
+                                ShoppingListApp.clearLongPressTimeout();
+                            },
+                            'touchstart':function() {
+                                ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
+                            },
+                            'touchend':function() {
+                                ShoppingListApp.clearLongPressTimeout();
+                            },
+                            'touchmove':function() {
+                                ShoppingListApp.clearLongPressTimeout();
+                            },
+                            'touchcancel':function() {
+                                ShoppingListApp.clearLongPressTimeout();
+                            }
+                        },
+                        'div.listoflistsrow');
+                }
+            };
+            return retVal;
         };
 
         self.renderViewAllListOfListsItem = function(item) {
+            console.log("MAXMAXMAX:self.renderViewAllListOfListsItem");
             var itemcountclass = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "listitemcount_selected" : "";
             var itemnameclass = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "listitemname_selected" : "";
-
-            return "<div class='listoflistsrow green_2'" +
-                           "onclick='ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY)'>" +
+            var retVal = {
+                innerHTML :
+                    "<div class='listoflistsrow green_2'" +
                        "<div class='listoflistsitemcount " + itemcountclass + "'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
                        "<div class='listoflistsname " + itemnameclass + "'>" + Localizer.getTranslation("view_all") + "</div>" +
-                   "</div>";
+                   "</div>",
+                addHandlers: function(parent) {
+                    $(parent)
+                        .on('click','div.listoflistsrow',function() {
+                           ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
+                        });
+                }
+            };
+
+            return retVal;
         };
 
         self.populateCurrentList = function() {
@@ -138,26 +240,60 @@ var HARDWARE = 1;
         };
 
         self.renderCurrentListItem = function(item) {
+            console.log("MAXMAXMAX:self.renderCurrentListItem");
             var itemboughtclass = (item.bought == 1) ? "itembought" : "itemnotbought";
             var itemisfavoriteclass = (item.favorite == 1) ? "itemisfavorite" : "itemisnotfavorite";
-
-            return "<div class='listitem'>" +
-                       "<div class='boughtstate " + itemboughtclass + "' onclick='MyListsView.onMyListsItemClicked(this, \"" + item._id + "\")'>" +
-                               "</div>" +
-                       "<div class= mylistsitemtextpane onmousedown='ShoppingListApp.onMouseDownOnItem(\"" + item._id + "\", \"" + escape(item.name) + "\")'" +
-                               "onmouseup='ShoppingListApp.clearLongPressTimeout()'" +
-                               "onmouseout='ShoppingListApp.clearLongPressTimeout()'" +
-                               "ontouchstart='ShoppingListApp.onMouseDownOnItem(\"" + item._id + "\", \"" + escape(item.name) + "\")'" +
-                               "ontouchend='ShoppingListApp.clearLongPressTimeout()'" +
-                               "ontouchmove='ShoppingListApp.clearLongPressTimeout()'" +
-                               "ontouchcancel='ShoppingListApp.clearLongPressTimeout()'>" +
+            var retVal = {
+                innerHTML :
+                   "<div class='listitem'>" +
+                       "<div class='boughtstate " + itemboughtclass + "'></div>" +
+                       "<div class='mylistsitemtextpane'>" +
                            "<div class='itemname'>" + item.name + "</div>" +
                            "<div class='itemstore'>" + item.store + "</div>" +
                            "<div class='itemtype'>" + item.type + "</div>" +
                        "</div>" +
                        "<img src='" + item.image + "' />" +
-                       "<div class='favoritestate " + itemisfavoriteclass + "' onclick ='MyListsView.onMyListsItemIsFavoriteClicked(this, \"" + item._id + "\")'></div>" +
-                   "</div>";
+                       "<div class='favoritestate " + itemisfavoriteclass + "'></div>" +
+                   "</div>",
+                addHandlers : function(parent) {
+                    $(parent)
+                        .on({
+                           'click':function() {
+                               MyListsView.onMyListsItemClicked(this, item._id);
+                           }
+                        },'div.boughtstate')
+                        .on({
+                           'mousedown':function() {
+                               ShoppingListApp.onMouseDownOnItem(item._id,escape(item.name));
+                           },
+                           'mouseup':function() {
+                               ShoppingListApp.clearLongPressTimeout();
+                           },
+                           'mouseout':function() {
+                               ShoppingListApp.clearLongPressTimeout();
+                           },
+                           'touchstart':function() {
+                               ShoppingListApp.onMouseDownOnItem(item._id,escape(item.name));
+                           },
+                           'touchend':function() {
+                               ShoppingListApp.clearLongPressTimeout();
+                           },
+                           'touchmove':function() {
+                               ShoppingListApp.clearLongPressTimeout();
+                           },
+                           'touchcancel':function() {
+                               ShoppingListApp.clearLongPressTimeout();
+                           }
+                        },'div.mylistsitemtextpane')
+                        .on({
+                            'click':function() {
+                                MyListsView.onMyListsItemIsFavoriteClicked(this,item._id);
+                            }
+                        },'div.favoritestate');
+                }
+            };
+
+            return retVal;
         };
 
         self.onMyListsItemClicked = function(element, id) {
@@ -210,34 +346,73 @@ var HARDWARE = 1;
         };
 
         self.populateActiveListPaneMain = function(item) {
-            return "<div class='activelistnarrow green'" +
-                           "onmousedown='ShoppingListApp.onMouseDownOnStore(\"" + escape(item.name) + "\")'" +
-                           "onmouseup='ShoppingListApp.clearLongPressTimeout()'" +
-                           "onmouseout='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchstart='ShoppingListApp.onMouseDownOnStore(\"" + escape(item.name) + "\")'" +
-                           "ontouchend='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchmove='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchcancel='ShoppingListApp.clearLongPressTimeout()'" +
-                           "onclick='ShoppingListApp.onListOfListsRowClicked(\"" + escape(item.name) + "\")'>" +
+            console.log("MAXMAXMAX:self.populateActiveListPaneMain");
+            var retVal = {
+                innerHTML :
+                   "<div class='activelistnarrow green'>" +
                        "<div class='activelistinfopane'>" +
                            "<div class='activelistitemcount'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
                            "<div class='activelistname'>" + item.name + "</div>" +
                        "</div>" +
-                       "<div class='activelistbutton' onclick='MyStoreSelectionDialog.showStoreSelectionDialog(ShoppingListApp.activelistSelectedCallback, true)'></div>" +
+                       "<div class='activelistbutton'></div>" +
                    "</div>" +
-                   "<button id='activelistaddnewlistbutton' class='shoppinglistbutton' onclick='addStoreDialog.show(VIEW_MODE.NEW)'></button>";
+                   "<button id='activelistaddnewlistbutton' class='shoppinglistbutton'></button>",
+                addHandlers : function(parent) {
+                    $(parent)
+                        .on({
+                           'mousedown, touchstart':function() {
+                               ShoppingListApp.onMouseDownOnStore(escape(item.name));
+                           },
+                           'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
+                               ShoppingListApp.clearLongPressTimeout();
+                           },
+                           'click':function() {
+                               ShoppingListApp.onListOfListsRowClicked(escape(item.name));
+                           }
+                        },'div.activelistnarrow')
+                        .on({
+                           'click':function() {
+                               MyStoreSelectionDialog.showStoreSelectionDialog(ShoppingListApp.activelistSelectedCallback, true);
+                           }
+                        },'div.activelistbutton')
+                        .on({
+                           'click':function() {
+                              addStoreDialog.show(VIEW_MODE.NEW);
+                           }
+                        },'#activelistaddnewlistbutton');
+                }
+            };
+
+            return retVal;
         };
 
         self.populateViewAllActiveListPane = function(item) {
-            return "<div class='activelistnarrow green_2'" +
-                           "onclick='ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY)'>" +
+            console.log("MAXMAXMAX:self.populateViewAllActiveListPane");
+            var retVal = {
+                innerHTML :
+                   "<div class='activelistnarrow green_2'>" +
                        "<div class='activelistinfopane'>" +
                           "<div class='activelistitemcount'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
                           "<div class='activelistname'>" + Localizer.getTranslation("view_all") + "</div>" +
                        "</div>" +
-                       "<div class='activelistbutton' onclick='MyStoreSelectionDialog.showStoreSelectionDialog(ShoppingListApp.activelistSelectedCallback, true)'></div>" +
+                       "<div class='activelistbutton'></div>" +
                    "</div>" +
-                   "<button id='activelistaddnewlistbutton' class='shoppinglistbutton' onclick='addStoreDialog.show(VIEW_MODE.NEW)'></button>";
+                   "<button id='activelistaddnewlistbutton' class='shoppinglistbutton'></button>",
+                addHandlers : function(parent) {
+                    $(parent)
+                        .on('click','div.activelistnarrow',function() {
+                           ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
+                        })
+                        .on('click','div.activelistbutton',function() {
+                            MyStoreSelectionDialog.showStoreSelectionDialog(ShoppingListApp.activelistSelectedCallback, true);
+                        })
+                        .on('click','#activelistaddnewlistbutton',function() {
+                            addStoreDialog.show(VIEW_MODE.NEW);
+                        });
+                }
+            };
+
+            return retVal;
         };
 
         self.getOptionsPaneParameters = function() {
@@ -258,32 +433,57 @@ var HARDWARE = 1;
         };
 
         self.renderListOfListsItemMain = function(item) {
+            console.log("MAXMAXMAX:self.renderListOfListsItemMain");
             var itemcountclass = (ShoppingListApp.currentKey === item.name) ? "listitemcount_selected" : "";
             var itemnameclass = (ShoppingListApp.currentKey === item.name) ? "listitemname_selected" : "";
 
-            return "<div class='listoflistsrow green'" +
-                           "onmousedown='ShoppingListApp.onMouseDownOnStore(\"" + escape(item.name) + "\")'" +
-                           "onmouseup='ShoppingListApp.clearLongPressTimeout()'" +
-                           "onmouseout='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchstart='ShoppingListApp.onMouseDownOnStore(\"" + escape(item.name) + "\")'" +
-                           "ontouchend='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchmove='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchcancel='ShoppingListApp.clearLongPressTimeout()'" +
-                           "onclick='ShoppingListApp.onListOfListsRowClicked(\"" + escape(item.name) + "\")'>" +
+            var retVal = {
+                innerHTML :
+                   "<div class='listoflistsrow green'>" +
                        "<div class='listoflistsitemcount " + itemcountclass + "'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
                        "<div class='listoflistsname " + itemnameclass + "'>" + item.name + "</div>" +
-                   "</div>";
+                   "</div>",
+                addHandlers : function(parent) {
+                    $(parent)
+                        .on({
+                            'mousedown':function() {
+                                ShoppingListApp.onMouseDownOnStore(escape(item.name));
+                            },
+                            'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
+                                ShoppingListApp.clearLongPressTimeout();
+                            },
+                            'touchstart':function() {
+                                ShoppingListApp.onMouseDownOnStore(escape(item.name));
+                            },
+                            'click':function() {
+                                ShoppingListApp.onListOfListsRowClicked(escape(item.name));
+                            }
+                        }, 'div.listoflistsrow' );
+                }
+            };
+
+            return retVal;
         };
 
         self.renderViewAllListOfListsItem = function(item) {
+            console.log("MAXMAXMAX:self.renderViewAllListOfListsItem");
             var itemcountclass = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "listitemcount_selected" : "";
             var itemnameclass = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "listitemname_selected" : "";
+            var retVal = {
+                innerHTML :
+                    "<div class='listoflistsrow green_2'" +
+                        "<div class='listoflistsitemcount " + itemcountclass + "'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
+                        "<div class='listoflistsname " + itemnameclass + "'>" + Localizer.getTranslation("view_all") + "</div>" +
+                    "</div>",
+                addHandlers : function(parent) {
+                    $(parent)
+                        .on('click','div.listoflistsrow',function() {
+                            ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
+                        });
+                }
+            };
 
-            return "<div class='listoflistsrow green_2'" +
-                           "onclick='ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY)'>" +
-                       "<div class='listoflistsitemcount " + itemcountclass + "'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
-                       "<div class='listoflistsname " + itemnameclass + "'>" + Localizer.getTranslation("view_all") + "</div>" +
-                   "</div>";
+            return retVal;
         };
 
         self.populateCurrentList = function() {
@@ -295,27 +495,47 @@ var HARDWARE = 1;
         };
 
         self.renderCurrentListItem = function(item) {
+            console.log("MAXMAXMAX:self.renderCurrentListItem");
             var itemboughtclass = (item.bought == 1) ? "itembought" : "itemnotbought";
             var itemisfavoriteclass = (item.favorite == 1) ? "itemisfavorite" : "itemisnotfavorite";
-
-            return "<div class='listitem'>" +
-                       "<div class='boughtstate " + itemboughtclass + "' onclick='MyStoresView.onMyStoresItemClicked(this, \"" + item._id + "\")'>" +
-                       "</div>" +
+            var retVal = {
+                innerHTML :
+                   "<div class='listitem'>" +
+                       "<div class='boughtstate " + itemboughtclass + "'></div>" +
                        "<div class='mystoresitemlistindicator " + item.color + "'></div>" +
-                       "<div class= 'mystoresitemtextpane' onmousedown='ShoppingListApp.onMouseDownOnItem(\"" + item._id + "\", \"" + escape(item.name) + "\")'" +
-                                   "onmouseup='ShoppingListApp.clearLongPressTimeout()'" +
-                                   "onmouseout='ShoppingListApp.clearLongPressTimeout()'" +
-                                   "ontouchstart='ShoppingListApp.onMouseDownOnItem(\"" + item._id + "\", \"" + escape(item.name) + "\")'" +
-                                   "ontouchend='ShoppingListApp.clearLongPressTimeout()'" +
-                                   "ontouchmove='ShoppingListApp.clearLongPressTimeout()'" +
-                                   "ontouchcancel='ShoppingListApp.clearLongPressTimeout()'>" +
+                       "<div class='mystoresitemtextpane' "+
+
+                                   ">" +
                            "<div class='itemname'>" + item.name + "</div>" +
                            "<div class='itemstore'>" + item.store + "</div>" +
                            "<div class='itemtype'>" + item.type + "</div>" +
                        "</div>" +
                        "<img src='" + item.image + "' />" +
-                       "<div class='favoritestate " + itemisfavoriteclass + "' onclick ='MyStoresView.onMyStoresItemIsFavoriteClicked(this, \"" + item._id + "\")'></div>" +
-                   "</div>";
+                       "<div class='favoritestate " + itemisfavoriteclass + "'></div>" +
+                   "</div>",
+                addHandlers : function(parent) {
+                    $(parent)
+                        .on({
+                           'click':function() {
+                               MyStoresView.onMyStoresItemClicked(this, item._id);
+                           }
+                        },'div.boughtstate')
+                        .on({
+                            'mousedown, touchstart':function() {
+                                ShoppingListApp.onMouseDownOnItem(item._id,escape(item.name));
+                            },
+                            'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
+                                ShoppingListApp.clearLongPressTimeout();
+                            }
+
+                        },'div.mystoresitemtextpane')
+                        .on({
+                           'click':function() {
+                               MyStoresView.onMyStoresItemIsFavoriteClicked(this, item._id);
+                           }
+                        },'div.favoritestate');
+                }
+            };
         };
 
         self.onMyStoresItemClicked = function(element, id) {
@@ -368,32 +588,68 @@ var HARDWARE = 1;
         };
 
         self.populateActiveListPaneMain = function(item) {
-            return "<div class='activelistwide " + item.color + "'" +
-                           "onclick='ShoppingListApp.onListOfListsRowClicked(\"" + escape(item.name) + "\")'" +
-                           "onmousedown='ShoppingListApp.onMouseDownOnList(\"" + escape(item.name) + "\", \"" + item.color + "\")'" +
-                           "onmouseup='ShoppingListApp.clearLongPressTimeout()'" +
-                           "onmouseout='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchstart='ShoppingListApp.onMouseDownOnList(\"" + escape(item.name) + "\", \"" + item.color + "\")'" +
-                           "ontouchend='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchmove='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchcancel='ShoppingListApp.clearLongPressTimeout()'>" +
+            console.log("MAXMAXMAX:self.populateActiveListPaneMain");
+            var retVal = {
+                innerHTML :
+                   "<div class='activelistwide " + item.color + "'>" +
                        "<div class='activelistinfopane'>" +
                            "<div class='activelistitemcount'>" + item.totalcount + "</div>" +
                            "<div class='activelistname'>" + item.name + "</div>" +
                        "</div>" +
-                       "<div class='activelistbutton' onclick='MyListSelectionDialog.showListSelectionDialog(ShoppingListApp.activelistSelectedCallback, true)'></div>" +
-                   "</div>";
+                       "<div class='activelistbutton'></div>" +
+                   "</div>",
+                addHandlers : function(parent) {
+                    $(parent)
+                        .on({
+                           'click':function() {
+                               ShoppingListApp.onListOfListsRowClicked(escape(item.name));
+                           },
+                           'mousedown, touchstart':function() {
+                               ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
+                               ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
+                           },
+                           'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
+                               ShoppingListApp.clearLongPressTimeout();
+                           }
+                        },'div.activelistwide')
+                        .on({
+                           'click':function() {
+                               MyListSelectionDialog.showListSelectionDialog(ShoppingListApp.activelistSelectedCallback, true);
+                           }
+                        },'div.activelistbutton');
+                }
+            };
+
+            return retVal;
         };
 
         self.populateAllMyFavoritesActiveListPane = function(item) {
-            return "<div class='activelistwide green_2'" +
-                           "onclick='ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY)'>" +
+            console.log("MAXMAXMAX:self.populateAllMyFavoritesActiveListPane");
+            var retVal = {
+                innerHTML :
+                   "<div class='activelistwide green_2'>" +
                        "<div class='activelistinfopane'>" +
                           "<div class='activelistitemcount'>" + item.totalcount + "</div>" +
                           "<div class='activelistname'>" + Localizer.getTranslation("all_my_favorites") + "</div>" +
                        "</div>" +
-                       "<div class='activelistbutton' onclick='MyListSelectionDialog.showListSelectionDialog(ShoppingListApp.activelistSelectedCallback)'></div>" +
-                   "</div>";
+                       "<div class='activelistbutton'></div>" +
+                   "</div>",
+                addHandlers : function(parent) {
+                    $(parent)
+                        .on({
+                           'click':function() {
+                               ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
+                           }
+                        },'div.activelistwide')
+                        .on({
+                           'click':function() {
+                               MyListSelectionDialog.showListSelectionDialog(ShoppingListApp.activelistSelectedCallback);
+                           }
+                        },'div.activelistbutton');
+                }
+            };
+
+            return retVal;
         };
 
         self.getOptionsPaneParameters = function() {
@@ -416,30 +672,68 @@ var HARDWARE = 1;
         self.renderListOfListsItemMain = function(item) {
             var itemcountclass = (ShoppingListApp.currentKey === item.name) ? "listitemcount_selected" : "";
             var itemnameclass = (ShoppingListApp.currentKey === item.name) ? "listitemname_selected" : "";
-
-            return "<div class='listoflistsrow " + item.color + "'" +
-                           "onclick='ShoppingListApp.onListOfListsRowClicked(\"" + escape(item.name) + "\")'" +
-                           "onmousedown='ShoppingListApp.onMouseDownOnList(\"" + escape(item.name) + "\", \"" + item.color + "\")'" +
-                           "onmouseup='ShoppingListApp.clearLongPressTimeout()'" +
-                           "onmouseout='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchstart='ShoppingListApp.onMouseDownOnList(\"" + escape(item.name) + "\", \"" + item.color + "\")'" +
-                           "ontouchend='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchmove='ShoppingListApp.clearLongPressTimeout()'" +
-                           "ontouchcancel='ShoppingListApp.clearLongPressTimeout()'>" +
+            var retVal = {
+                innerHTML :
+                   "<div class='listoflistsrow " + item.color + "'>" +
                        "<div class='listoflistsitemcount " + itemcountclass + "'>" + item.totalcount + "</div>" +
                        "<div class='listoflistsname " + itemnameclass + "'>" + item.name + "</div>" +
-                   "</div>";
+                   "</div>",
+                addHandlers : function(parent) {
+                    $(parent)
+                        .on({
+                            'click':function() {
+                                ShoppingListApp.onListOfListsRowClicked(escape(item.name));
+                            },
+                            'mousedown':function() {
+                                ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
+                            },
+                            'mouseup':function() {
+                                ShoppingListApp.clearLongPressTimeout();
+                            },
+                            'mouseout':function() {
+                                ShoppingListApp.clearLongPressTimeout();
+                            },
+                            'touchstart':function() {
+                                ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
+                            },
+                            'touchend':function() {
+                                ShoppingListApp.clearLongPressTimeout();
+                            },
+                            'touchmove':function() {
+                                ShoppingListApp.clearLongPressTimeout();
+                            },
+                            'touchcancel':function() {
+                                ShoppingListApp.clearLongPressTimeout();
+                            }
+                        },
+                        'div.listoflistsrow' );
+                }
+            };
+
+            return retVal;
         };
 
         self.renderAllMyFavoritesListOfListsItem = function(item) {
             var itemcountclass = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "listitemcount_selected" : "";
             var itemnameclass = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "listitemname_selected" : "";
-
-            return "<div class='listoflistsrow green_2'" +
-                           "onclick='ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY)'>" +
+            var retVal = {
+                innerHTML :
+                   "<div class='listoflistsrow green_2'>" +
                        "<div class='listoflistsitemcount " + itemcountclass + "'>" + item.totalcount + "</div>" +
                        "<div class='listoflistsname " + itemnameclass + "'>" + Localizer.getTranslation("all_my_favorites") + "</div>" +
-                   "</div>";
+                   "</div>",
+                addHandlers : function(parent) {
+                    $(parent)
+                        .on({
+                           'click':function() {
+                               ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
+                           }
+                        },
+                        'div.listoflistsrow');
+                }
+            };
+
+            return retVal;
         };
 
         self.populateCurrentList = function() {
@@ -454,23 +748,38 @@ var HARDWARE = 1;
             var itemisfavoriteclass = (item.favorite == 1) ? "itemisfavorite" : "itemisnotfavorite";
             var itemlistindicator = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "<div class='myfavoritesitemlistindicator " + item.color + "'></div>" : "";
             var textpane = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "allmyfavoritesitemtextpane" : "myfavoritesitemtextpane";
-
-            return "<div class='listitem'>" +
+            var retVal = {
+                innerHTML :
+                   "<div class='listitem'>" +
                        itemlistindicator +
-                       "<div class='" + textpane + "'" + "onmousedown='ShoppingListApp.onMouseDownOnItem(\"" + item._id + "\", \"" + escape(item.name) + "\")'" +
-                                   "onmouseup='ShoppingListApp.clearLongPressTimeout()'" +
-                                   "onmouseout='ShoppingListApp.clearLongPressTimeout()'" +
-                                   "ontouchstart='ShoppingListApp.onMouseDownOnItem(\"" + item._id + "\", \"" + escape(item.name) + "\")'" +
-                                   "ontouchend='ShoppingListApp.clearLongPressTimeout()'" +
-                                   "ontouchmove='ShoppingListApp.clearLongPressTimeout()'" +
-                                   "ontouchcancel='ShoppingListApp.clearLongPressTimeout()'>" +
+                       "<div class='" + textpane + "'>" +
                            "<div class='itemname'>" + item.name + "</div>" +
                            "<div class='itemstore'>" + item.store + "</div>" +
                            "<div class='itemtype'>" + item.type + "</div>" +
                        "</div>" +
                         "<img src='" + item.image + "' />" +
-                        "<div class='favoritestate " + itemisfavoriteclass + "' onclick ='MyFavoritesView.onMyFavoritesItemIsFavoriteClicked(this, \"" + item._id + "\")'>" +
-                   "</div>";
+                        "<div class='favoritestate " + itemisfavoriteclass + "'>" +
+                   "</div>",
+                addHandlers: function(parent) {
+                    $(parent)
+                        .on({
+                            'mousedown, touchstart':function() {
+                                ShoppingListApp.onMouseDownOnItem(item._id,escape(item.name));
+                            },
+                            'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
+                                ShoppingListApp.clearLongPressTimeout();
+                            },
+                        },'div.'+textpane)
+                        .on({
+                            'click':function() {
+                                MyFavoritesView.onMyFavoritesItemIsFavoriteClicked(this,item._id);
+                            }
+                        },'div.favoritestate');
+                }
+            };
+
+            return retVal;
+
         };
 
         self.onMyFavoritesItemIsFavoriteClicked = function(element, id) {
@@ -683,10 +992,14 @@ var HARDWARE = 1;
             }
 
             for (var i = 0; i < result.length; i++) {
-                self.listoflists.innerHTML += self.currentView.renderListOfListsItem(result.item(i));
+                var tmp = self.currentView.renderListOfListsItem(result.item(i));
+                self.listoflists.innerHTML += tmp.innerHTML;
+                tmp.addHandlers(self.listoflists);
 
                 if (result.item(i).name == self.currentKey) {
-                    self.activelist.innerHTML = self.currentView.populateActiveListPane(result.item(i));
+                    var tmp = self.currentView.populateActiveListPane(result.item(i));
+                    self.activelist.innerHTML = tmp.innerHTML;
+                    tmp.addHandlers(self.activelist);
                 }
             }
             self.currentView.populateListOfListsNextPhase();
@@ -1125,7 +1438,6 @@ var HARDWARE = 1;
     };
 
     function registerEventHandlers() {
-        console.log("MAXMAXMAX:registerEventHandlers");
         var map = {
             'body' : {
                 'keypress' : function(event) {
@@ -1191,10 +1503,9 @@ var HARDWARE = 1;
         };
 
         $.each(map, function(selector, handlerMap) {
-            $.each(handlerMap, function(eventString, handler) {
-                $(selector).on(eventString,handler);
-            });
+            $(selector).on(handlerMap,selector);
         });
+
     };
 
     $(document).ready(function() {
