@@ -1123,5 +1123,83 @@ var HARDWARE = 1;
 
         self.createDB();
     };
+
+    function registerEventHandlers() {
+        console.log("MAXMAXMAX:registerEventHandlers");
+        var map = {
+            'body' : {
+                'keypress' : function(event) {
+                    return ShoppingListApp.handleKeyPress(event);
+                }
+            },
+            '#mylistsbutton' : {
+                'click' : function() {
+                    ShoppingListApp.onMyListsButtonClicked();
+                }
+            },
+            '#mystoresbutton' : {
+                'click' : function() {
+                    ShoppingListApp.onMyStoresButtonClicked();
+                }
+            },
+            '#myfavoritesbutton' : {
+                'click' : function() {
+                    ShoppingListApp.onMyFavoritesButtonClicked();
+                }
+            },
+            '#searchcurrentlistbutton' : {
+                'click' : function() {
+                    ShoppingListApp.onSearchButtonClick();
+                }
+            },
+            '#searchbackbutton' : {
+                'click' : function() {
+                    ShoppingListApp.onSearchBackButtonClick();
+                }
+            },
+            '#searchremovebutton' : {
+                'click' : function() {
+                    ShoppingListApp.onClearSearchButtonClick();
+                }
+            },
+            '#searchinput' : {
+                'keyup' : function() {
+                    ShoppingListApp.setSearchPattern(searchform.searchname.value);
+                }
+            },
+            '#sortcurrentlistbutton' : {
+                'click' : function() {
+                    showSortbyDialog(ShoppingListApp.sortbyOption, ShoppingListApp.handleSortOption);
+                }
+            },
+            '#addnewitembutton' : {
+                'click' : function() {
+                    editItemScreen.show(VIEW_MODE.NEW);
+                }
+            },
+            '#storename_input, #item_name_input, #list_name' : {
+                'blur' : function() {
+                    this.value=adjustSpaces(this.value);
+                }
+            },
+            '#pink_1, #blue_1, #purple_1, #green_1, #yellow_1, #brown_1, #pink_2, #blue_2, #purple_2, #green_2, #yellow_2, #brown_2, #pink_3, #blue_3, #purple_3, #green_3, #yellow_3, #brown_3' : {
+                'click' : function(event) {
+                    editListScreen.listTypeColorClick(event.target.id);
+                }
+            }
+
+        };
+
+        $.each(map, function(selector, handlerMap) {
+            $.each(handlerMap, function(eventString, handler) {
+                $(selector).on(eventString,handler);
+            });
+        });
+    };
+
+    $(document).ready(function() {
+        registerEventHandlers();
+        ShoppingListApp.initOnLoad();
+    });
 })();
 
