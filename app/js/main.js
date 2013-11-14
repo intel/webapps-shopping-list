@@ -1503,7 +1503,8 @@ var HARDWARE = 1;
         };
 
         $.each(map, function(selector, handlerMap) {
-            $(selector).on(handlerMap,selector);
+	    console.log("MAXMAXMAX",handlerMap,":",selector);
+            $(selector).on(handlerMap);
         });
 
     };
