@@ -67,60 +67,47 @@ var HARDWARE = 1;
                 handlerMap : {
                     'div.activelistnarrow' : {
                         'click' : function() {
-                            console.log("MAXMAXMAX");
                             ShoppingListApp.onListOfListsRowClicked(escape(item.name));
                         },
                         'mousedown' : function() {
-                            console.log("MAXMAXMAX");
                             ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
                         },
                         'mouseup' : function() {
-                            console.log("MAXMAXMAX");
                             ShoppingListApp.clearLongPressTimeout();
                         },
                         'mouseout' : function() {
-                            console.log("MAXMAXMAX");
                             ShoppingListApp.clearLongPressTimeout();
                         },
                         'touchstart' : function() {
-                            console.log("MAXMAXMAX");
                             ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
                         },
                         'touchend' : function() {
-                            console.log("MAXMAXMAX");
                             ShoppingListApp.clearLongPressTimeout();
                         },
                         'touchmove' : function() {
-                            console.log("MAXMAXMAX");
                             ShoppingListApp.clearLongPressTimeout();
                         },
                         'touchcancel' : function() {
-                            console.log("MAXMAXMAX");
                             ShoppingListApp.clearLongPressTimeout();
                         }
                     },
                     'div.activelistbutton' : {
                         'click' : function() {
-                            console.log("MAXMAXMAX");
                             MyListSelectionDialog.showListSelectionDialog(ShoppingListApp.activelistSelectedCallback, true);
                        }
                     },
                     '#activelistaddnewlistbutton' : {
                         'click' : function() {
-                            console.log("MAXMAXMAX");
                             editListScreen.show(VIEW_MODE.NEW);
                         }
                     }
                 }
             };
 
-            console.log("MAXMAXMAX");
-
             return retVal;
         };
 
         self.populateViewAllActiveListPane = function(item) {
-            console.log("MAXMAXMAX:self.populateViewAllActiveListPane");
             var retVal = {
                 innerHTML :
                    "<div class='activelistnarrow green_2'>" +
@@ -166,7 +153,6 @@ var HARDWARE = 1;
         };
 
         self.renderListOfListsItemMain = function(item) {
-            console.log("MAXMAXMAX:self.renderListOfListsItemMain");
             var itemcountclass = (ShoppingListApp.currentKey === item.name) ? "listitemcount_selected" : "";
             var itemnameclass = (ShoppingListApp.currentKey === item.name) ? "listitemname_selected" : "";
 
@@ -211,7 +197,6 @@ var HARDWARE = 1;
         };
 
         self.renderViewAllListOfListsItem = function(item) {
-            console.log("MAXMAXMAX:self.renderViewAllListOfListsItem");
             var itemcountclass = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "listitemcount_selected" : "";
             var itemnameclass = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "listitemname_selected" : "";
             var retVal = {
@@ -240,7 +225,6 @@ var HARDWARE = 1;
         };
 
         self.renderCurrentListItem = function(item) {
-            console.log("MAXMAXMAX:self.renderCurrentListItem");
             var itemboughtclass = (item.bought == 1) ? "itembought" : "itemnotbought";
             var itemisfavoriteclass = (item.favorite == 1) ? "itemisfavorite" : "itemisnotfavorite";
             var retVal = {
@@ -346,7 +330,6 @@ var HARDWARE = 1;
         };
 
         self.populateActiveListPaneMain = function(item) {
-            console.log("MAXMAXMAX:self.populateActiveListPaneMain");
             var retVal = {
                 innerHTML :
                    "<div class='activelistnarrow green'>" +
@@ -387,7 +370,6 @@ var HARDWARE = 1;
         };
 
         self.populateViewAllActiveListPane = function(item) {
-            console.log("MAXMAXMAX:self.populateViewAllActiveListPane");
             var retVal = {
                 innerHTML :
                    "<div class='activelistnarrow green_2'>" +
@@ -433,7 +415,6 @@ var HARDWARE = 1;
         };
 
         self.renderListOfListsItemMain = function(item) {
-            console.log("MAXMAXMAX:self.renderListOfListsItemMain");
             var itemcountclass = (ShoppingListApp.currentKey === item.name) ? "listitemcount_selected" : "";
             var itemnameclass = (ShoppingListApp.currentKey === item.name) ? "listitemname_selected" : "";
 
@@ -466,7 +447,6 @@ var HARDWARE = 1;
         };
 
         self.renderViewAllListOfListsItem = function(item) {
-            console.log("MAXMAXMAX:self.renderViewAllListOfListsItem");
             var itemcountclass = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "listitemcount_selected" : "";
             var itemnameclass = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "listitemname_selected" : "";
             var retVal = {
@@ -495,7 +475,6 @@ var HARDWARE = 1;
         };
 
         self.renderCurrentListItem = function(item) {
-            console.log("MAXMAXMAX:self.renderCurrentListItem");
             var itemboughtclass = (item.bought == 1) ? "itembought" : "itemnotbought";
             var itemisfavoriteclass = (item.favorite == 1) ? "itemisfavorite" : "itemisnotfavorite";
             var retVal = {
@@ -588,7 +567,6 @@ var HARDWARE = 1;
         };
 
         self.populateActiveListPaneMain = function(item) {
-            console.log("MAXMAXMAX:self.populateActiveListPaneMain");
             var retVal = {
                 innerHTML :
                    "<div class='activelistwide " + item.color + "'>" +
@@ -624,7 +602,6 @@ var HARDWARE = 1;
         };
 
         self.populateAllMyFavoritesActiveListPane = function(item) {
-            console.log("MAXMAXMAX:self.populateAllMyFavoritesActiveListPane");
             var retVal = {
                 innerHTML :
                    "<div class='activelistwide green_2'>" +
@@ -1503,7 +1480,6 @@ var HARDWARE = 1;
         };
 
         $.each(map, function(selector, handlerMap) {
-	    console.log("MAXMAXMAX",handlerMap,":",selector);
             $(selector).on(handlerMap);
         });
 
