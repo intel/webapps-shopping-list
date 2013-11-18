@@ -18,11 +18,11 @@ FileSystem = new function() {
     self.streamUrl = null;
     self.fileSystem = null;
     self.savePhotoCallback = null;
-    
+
     self.initialize = function() {
         // request access to a sandboxed file system
         window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
-        
+
         // Initiate filesystem on page load
         if (window.requestFileSystem) {
             self.initFS();
@@ -31,9 +31,9 @@ FileSystem = new function() {
         if (navigator.webkitGetUserMedia) {
             self.startVideo();
         }
-        
+
     };
-    
+
     self.initFS = function() {
         var quotaBytes = 10*1024*1024; // 10 MB
         window.requestFileSystem(
@@ -42,12 +42,12 @@ FileSystem = new function() {
                 self.onInitFs,
                 self.errorHandler);
     };
-    
+
     self.onInitFs = function(fs) {
         //console.log('FileSystem onInitFs() Opened file system: ' + fs.name);
         Helper.printObjectProperties(fs);
         var quotaBytes = 10*1024*1024; // 10 MB
-        
+
         if (window.webkitStorageInfo && window.webkitStorageInfo.requestQuota) {
             window.webkitStorageInfo.requestQuota(webkitStorageInfo.PERSISTENT, quotaBytes);
         }
@@ -57,16 +57,16 @@ FileSystem = new function() {
     self.saveCanvasAsImage = function(fileName, callback) {
         console.log("saveCanvasAsImage(): " + fileName);
         self.savePhotoCallback = callback;
-        
+
         //create image file
         self.fileSystem.root.getFile(fileName, {create:true}, function(fileEntry) {
             //start file writer
             console.log("start file writer");
-            
+
             fileEntry.createWriter(function(fileWriter) {
                 console.log("createWriter");
                 var image = $("#itemPhoto")[0];
-                
+
                 var url = "";
                 try {
                     url = image.toDataURL("image/png");
@@ -96,7 +96,7 @@ FileSystem = new function() {
 
     self.dataURItoBlob = function(dataURI, callback) {
         console.log("dataURItoBlob() dataURI: " + dataURI);
-        
+
         // convert base64 to raw binary data held in a string
         // doesn't handle URLEncoded DataURIs
         var byteString = atob(dataURI.split(",")[1]);
@@ -116,7 +116,7 @@ FileSystem = new function() {
         bb.append(ab);
         return bb.getBlob(mimeString);
     };
-    
+
     self.errorHandler = function(e) {
         var msg = '';
 
@@ -144,8 +144,8 @@ FileSystem = new function() {
         console.log('FileSystem Error: ' + msg);
         //showInfoDialog('FileSystem Error: ' + msg);
         self.savePhotoCallback(false);
-    };    
-    
+    };
+
     // http://www.html5rocks.com/en/tutorials/video/basics/
     // http://www.html5rocks.com/en/tutorials/getusermedia/intro/
     self.getVideoStream = function() {
@@ -176,6 +176,6 @@ FileSystem = new function() {
             self.getVideoStream();
         }
     };
-    
+
     return self;
 }

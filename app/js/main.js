@@ -118,17 +118,22 @@ var HARDWARE = 1;
                        "<div class='activelistbutton'></div>" +
                    "</div>" +
                    "<button id='activelistaddnewlistbutton' class='shoppinglistbutton'></button>",
-                addHandlers : function(parent) {
-                    $(parent)
-                        .on('click','div.activelistnarrow',function() {
-                           ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
-                        })
-                        .on('click','div.activelistbutton',function() {
-                            MyListSelectionDialog.showListSelectionDialog(ShoppingListApp.activelistSelectedCallback, true);
-                        })
-                        .on('click','#activelistaddnewlistbutton',function() {
-                            editListScreen.show(VIEW_MODE.NEW);
-                        });
+                handlerMap : {
+                  'div.activelistnarrow' : {
+                    'click': function() {
+                      ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
+                    }
+                  },
+                  'div.activelistbutton' : {
+                    'click' : function() {
+                      MyListSelectionDialog.showListSelectionDialog(ShoppingListApp.activelistSelectedCallback, true);
+                    }
+                  },
+                  '#activelistaddnewlistbutton' : {
+                    'click' : function() {
+                      editListScreen.show(VIEW_MODE.NEW);
+                    }
+                  }
                 }
             };
 
@@ -162,35 +167,18 @@ var HARDWARE = 1;
                        "<div class='listoflistsitemcount " + itemcountclass + "'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
                        "<div class='listoflistsname " + itemnameclass + "'>" + item.name + "</div>" +
                    "</div>",
-                addHandlers : function(parent) {
-                    $(parent)
-                        .on({
-                            'click':function() {
-                               ShoppingListApp.onListOfListsRowClicked(escape(item.name));
-                            },
-                            'mousedown':function() {
-                                ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
-                            },
-                            'mouseup':function() {
-                                ShoppingListApp.clearLongPressTimeout();
-                            },
-                            'mouseout':function() {
-                                ShoppingListApp.clearLongPressTimeout();
-                            },
-                            'touchstart':function() {
-                                ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
-                            },
-                            'touchend':function() {
-                                ShoppingListApp.clearLongPressTimeout();
-                            },
-                            'touchmove':function() {
-                                ShoppingListApp.clearLongPressTimeout();
-                            },
-                            'touchcancel':function() {
-                                ShoppingListApp.clearLongPressTimeout();
-                            }
-                        },
-                        'div.listoflistsrow');
+                handlerMap : {
+                  'div.listoflistsrow' : {
+                    'click':function() {
+                      ShoppingListApp.onListOfListsRowClicked(escape(item.name));
+                    },
+                    'mousedown,touchstart':function() {
+                      ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
+                    },
+                    'mouseup,mouseout,touchend,touchmove,touchcancel':function() {
+                      ShoppingListApp.clearLongPressTimeout();
+                    }
+                  }
                 }
             };
             return retVal;
@@ -205,11 +193,12 @@ var HARDWARE = 1;
                        "<div class='listoflistsitemcount " + itemcountclass + "'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
                        "<div class='listoflistsname " + itemnameclass + "'>" + Localizer.getTranslation("view_all") + "</div>" +
                    "</div>",
-                addHandlers: function(parent) {
-                    $(parent)
-                        .on('click','div.listoflistsrow',function() {
-                           ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
-                        });
+                handlerMap: {
+                  'div.listoflistsrow' : {
+                    'click' : function() {
+                      ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
+                    }
+                  }
                 }
             };
 
@@ -228,53 +217,37 @@ var HARDWARE = 1;
             var itemboughtclass = (item.bought == 1) ? "itembought" : "itemnotbought";
             var itemisfavoriteclass = (item.favorite == 1) ? "itemisfavorite" : "itemisnotfavorite";
             var retVal = {
-                innerHTML :
-                   "<div class='listitem'>" +
-                       "<div class='boughtstate " + itemboughtclass + "'></div>" +
-                       "<div class='mylistsitemtextpane'>" +
-                           "<div class='itemname'>" + item.name + "</div>" +
-                           "<div class='itemstore'>" + item.store + "</div>" +
-                           "<div class='itemtype'>" + item.type + "</div>" +
-                       "</div>" +
-                       "<img src='" + item.image + "' />" +
-                       "<div class='favoritestate " + itemisfavoriteclass + "'></div>" +
-                   "</div>",
-                addHandlers : function(parent) {
-                    $(parent)
-                        .on({
-                           'click':function() {
-                               MyListsView.onMyListsItemClicked(this, item._id);
-                           }
-                        },'div.boughtstate')
-                        .on({
-                           'mousedown':function() {
-                               ShoppingListApp.onMouseDownOnItem(item._id,escape(item.name));
-                           },
-                           'mouseup':function() {
-                               ShoppingListApp.clearLongPressTimeout();
-                           },
-                           'mouseout':function() {
-                               ShoppingListApp.clearLongPressTimeout();
-                           },
-                           'touchstart':function() {
-                               ShoppingListApp.onMouseDownOnItem(item._id,escape(item.name));
-                           },
-                           'touchend':function() {
-                               ShoppingListApp.clearLongPressTimeout();
-                           },
-                           'touchmove':function() {
-                               ShoppingListApp.clearLongPressTimeout();
-                           },
-                           'touchcancel':function() {
-                               ShoppingListApp.clearLongPressTimeout();
-                           }
-                        },'div.mylistsitemtextpane')
-                        .on({
-                            'click':function() {
-                                MyListsView.onMyListsItemIsFavoriteClicked(this,item._id);
-                            }
-                        },'div.favoritestate');
+              innerHTML :
+                "<div class='listitem'>" +
+                "<div class='boughtstate " + itemboughtclass + "'></div>" +
+                "<div class='mylistsitemtextpane'>" +
+                "<div class='itemname'>" + item.name + "</div>" +
+                "<div class='itemstore'>" + item.store + "</div>" +
+                "<div class='itemtype'>" + item.type + "</div>" +
+                "</div>" +
+                "<img src='" + item.image + "' />" +
+                "<div class='favoritestate " + itemisfavoriteclass + "'></div>" +
+                "</div>",
+              handlerMap : {
+                'div.boughtstate' : {
+                  'click':function() {
+                    MyListsView.onMyListsItemClicked(this, item._id);
+                  }
+                },
+                'div.mylistsitemtextpane' : {
+                  'mousedown,touchstart':function() {
+                    ShoppingListApp.onMouseDownOnItem(item._id,escape(item.name));
+                  },
+                  'mouseup,mouseout,touchend,touchmove,touchcancel':function() {
+                    ShoppingListApp.clearLongPressTimeout();
+                  }
+                },
+                'div.favoritestate' : {
+                  'click':function() {
+                    MyListsView.onMyListsItemIsFavoriteClicked(this,item._id);
+                  }
                 }
+              }
             };
 
             return retVal;
@@ -340,29 +313,28 @@ var HARDWARE = 1;
                        "<div class='activelistbutton'></div>" +
                    "</div>" +
                    "<button id='activelistaddnewlistbutton' class='shoppinglistbutton'></button>",
-                addHandlers : function(parent) {
-                    $(parent)
-                        .on({
-                           'mousedown, touchstart':function() {
-                               ShoppingListApp.onMouseDownOnStore(escape(item.name));
-                           },
-                           'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
-                               ShoppingListApp.clearLongPressTimeout();
-                           },
-                           'click':function() {
-                               ShoppingListApp.onListOfListsRowClicked(escape(item.name));
-                           }
-                        },'div.activelistnarrow')
-                        .on({
-                           'click':function() {
-                               MyStoreSelectionDialog.showStoreSelectionDialog(ShoppingListApp.activelistSelectedCallback, true);
-                           }
-                        },'div.activelistbutton')
-                        .on({
-                           'click':function() {
-                              addStoreDialog.show(VIEW_MODE.NEW);
-                           }
-                        },'#activelistaddnewlistbutton');
+                handlerMap : {
+                  'div.activelistnarrow' : {
+                    'mousedown,touchstart':function() {
+                      ShoppingListApp.onMouseDownOnStore(escape(item.name));
+                    },
+                    'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
+                      ShoppingListApp.clearLongPressTimeout();
+                    },
+                    'click':function() {
+                      ShoppingListApp.onListOfListsRowClicked(escape(item.name));
+                    }
+                  },
+                  'div.activelistbutton' : {
+                    'click':function() {
+                      MyStoreSelectionDialog.showStoreSelectionDialog(ShoppingListApp.activelistSelectedCallback, true);
+                    }
+                  },
+                  '#activelistaddnewlistbutton' : {
+                    'click':function() {
+                      addStoreDialog.show(VIEW_MODE.NEW);
+                    }
+                  }
                 }
             };
 
@@ -380,17 +352,24 @@ var HARDWARE = 1;
                        "<div class='activelistbutton'></div>" +
                    "</div>" +
                    "<button id='activelistaddnewlistbutton' class='shoppinglistbutton'></button>",
-                addHandlers : function(parent) {
-                    $(parent)
-                        .on('click','div.activelistnarrow',function() {
-                           ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
-                        })
-                        .on('click','div.activelistbutton',function() {
-                            MyStoreSelectionDialog.showStoreSelectionDialog(ShoppingListApp.activelistSelectedCallback, true);
-                        })
-                        .on('click','#activelistaddnewlistbutton',function() {
-                            addStoreDialog.show(VIEW_MODE.NEW);
-                        });
+                handlerMap : {
+                  'div.activelistnarrow' : {
+                    'click' : function() {
+                      ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
+                    }
+                  },
+
+                  'div.activelistbutton' : {
+                    'click' : function() {
+                      MyStoreSelectionDialog.showStoreSelectionDialog(ShoppingListApp.activelistSelectedCallback, true);
+                    }
+                  },
+
+                  '#activelistaddnewlistbutton' : {
+                    'click' : function() {
+                      addStoreDialog.show(VIEW_MODE.NEW);
+                    }
+                  }
                 }
             };
 
@@ -424,22 +403,21 @@ var HARDWARE = 1;
                        "<div class='listoflistsitemcount " + itemcountclass + "'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
                        "<div class='listoflistsname " + itemnameclass + "'>" + item.name + "</div>" +
                    "</div>",
-                addHandlers : function(parent) {
-                    $(parent)
-                        .on({
-                            'mousedown':function() {
-                                ShoppingListApp.onMouseDownOnStore(escape(item.name));
-                            },
-                            'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
-                                ShoppingListApp.clearLongPressTimeout();
-                            },
-                            'touchstart':function() {
-                                ShoppingListApp.onMouseDownOnStore(escape(item.name));
-                            },
-                            'click':function() {
-                                ShoppingListApp.onListOfListsRowClicked(escape(item.name));
-                            }
-                        }, 'div.listoflistsrow' );
+                handlerMap : {
+                  'div.listoflistsrow' : {
+                    'mousedown':function() {
+                      ShoppingListApp.onMouseDownOnStore(escape(item.name));
+                    },
+                    'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
+                      ShoppingListApp.clearLongPressTimeout();
+                    },
+                    'touchstart':function() {
+                      ShoppingListApp.onMouseDownOnStore(escape(item.name));
+                    },
+                    'click':function() {
+                      ShoppingListApp.onListOfListsRowClicked(escape(item.name));
+                    }
+                  }
                 }
             };
 
@@ -450,17 +428,18 @@ var HARDWARE = 1;
             var itemcountclass = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "listitemcount_selected" : "";
             var itemnameclass = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "listitemname_selected" : "";
             var retVal = {
-                innerHTML :
-                    "<div class='listoflistsrow green_2'" +
-                        "<div class='listoflistsitemcount " + itemcountclass + "'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
-                        "<div class='listoflistsname " + itemnameclass + "'>" + Localizer.getTranslation("view_all") + "</div>" +
-                    "</div>",
-                addHandlers : function(parent) {
-                    $(parent)
-                        .on('click','div.listoflistsrow',function() {
-                            ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
-                        });
+              innerHTML :
+                "<div class='listoflistsrow green_2'" +
+                  "<div class='listoflistsitemcount " + itemcountclass + "'>" + item.boughtcount + "/" + item.totalcount + "</div>" +
+                  "<div class='listoflistsname " + itemnameclass + "'>" + Localizer.getTranslation("view_all") + "</div>" +
+                "</div>",
+              handlerMap : {
+                'div.listoflistsrow' : {
+                  'click' : function() {
+                    ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
+                  }
                 }
+              }
             };
 
             return retVal;
@@ -492,29 +471,29 @@ var HARDWARE = 1;
                        "<img src='" + item.image + "' />" +
                        "<div class='favoritestate " + itemisfavoriteclass + "'></div>" +
                    "</div>",
-                addHandlers : function(parent) {
-                    $(parent)
-                        .on({
-                           'click':function() {
-                               MyStoresView.onMyStoresItemClicked(this, item._id);
-                           }
-                        },'div.boughtstate')
-                        .on({
-                            'mousedown, touchstart':function() {
-                                ShoppingListApp.onMouseDownOnItem(item._id,escape(item.name));
-                            },
-                            'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
-                                ShoppingListApp.clearLongPressTimeout();
-                            }
-
-                        },'div.mystoresitemtextpane')
-                        .on({
-                           'click':function() {
-                               MyStoresView.onMyStoresItemIsFavoriteClicked(this, item._id);
-                           }
-                        },'div.favoritestate');
+                handlerMap : {
+                  'div.boughtstate' : {
+                    'click':function() {
+                      MyStoresView.onMyStoresItemClicked(this, item._id);
+                    }
+                  },
+                  'div.mystoresitemtextpane' : {
+                    'mousedown, touchstart':function() {
+                      ShoppingListApp.onMouseDownOnItem(item._id,escape(item.name));
+                    },
+                    'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
+                      ShoppingListApp.clearLongPressTimeout();
+                    }
+                  },
+                  'div.favoritestate' : {
+                    'click':function() {
+                      MyStoresView.onMyStoresItemIsFavoriteClicked(this, item._id);
+                    }
+                  }
                 }
             };
+
+            return retVal;
         };
 
         self.onMyStoresItemClicked = function(element, id) {
@@ -567,36 +546,35 @@ var HARDWARE = 1;
         };
 
         self.populateActiveListPaneMain = function(item) {
-            var retVal = {
-                innerHTML :
-                   "<div class='activelistwide " + item.color + "'>" +
-                       "<div class='activelistinfopane'>" +
-                           "<div class='activelistitemcount'>" + item.totalcount + "</div>" +
-                           "<div class='activelistname'>" + item.name + "</div>" +
-                       "</div>" +
-                       "<div class='activelistbutton'></div>" +
-                   "</div>",
-                addHandlers : function(parent) {
-                    $(parent)
-                        .on({
-                           'click':function() {
-                               ShoppingListApp.onListOfListsRowClicked(escape(item.name));
-                           },
-                           'mousedown, touchstart':function() {
-                               ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
-                               ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
-                           },
-                           'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
-                               ShoppingListApp.clearLongPressTimeout();
-                           }
-                        },'div.activelistwide')
-                        .on({
-                           'click':function() {
-                               MyListSelectionDialog.showListSelectionDialog(ShoppingListApp.activelistSelectedCallback, true);
-                           }
-                        },'div.activelistbutton');
+          var retVal = {
+            innerHTML :
+              "<div class='activelistwide " + item.color + "'>" +
+                "<div class='activelistinfopane'>" +
+                  "<div class='activelistitemcount'>" + item.totalcount + "</div>" +
+                  "<div class='activelistname'>" + item.name + "</div>" +
+                "</div>" +
+                "<div class='activelistbutton'></div>" +
+              "</div>",
+            handlerMap : {
+              'div.activelistwide' : {
+                'click':function() {
+                  ShoppingListApp.onListOfListsRowClicked(escape(item.name));
+                },
+                'mousedown, touchstart':function() {
+                  ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
+                  ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
+                },
+                'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
+                  ShoppingListApp.clearLongPressTimeout();
                 }
-            };
+              },
+              'div.activelistbutton' : {
+                'click':function() {
+                  MyListSelectionDialog.showListSelectionDialog(ShoppingListApp.activelistSelectedCallback, true);
+                }
+              }
+            }
+          };
 
             return retVal;
         };
@@ -611,18 +589,17 @@ var HARDWARE = 1;
                        "</div>" +
                        "<div class='activelistbutton'></div>" +
                    "</div>",
-                addHandlers : function(parent) {
-                    $(parent)
-                        .on({
-                           'click':function() {
-                               ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
-                           }
-                        },'div.activelistwide')
-                        .on({
-                           'click':function() {
-                               MyListSelectionDialog.showListSelectionDialog(ShoppingListApp.activelistSelectedCallback);
-                           }
-                        },'div.activelistbutton');
+                handlerMap : {
+                  'div.activelistwide' : {
+                    'click':function() {
+                      ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
+                    }
+                  },
+                  'div.activelistbutton' : {
+                    'click':function() {
+                      MyListSelectionDialog.showListSelectionDialog(ShoppingListApp.activelistSelectedCallback);
+                    }
+                  }
                 }
             };
 
@@ -655,35 +632,18 @@ var HARDWARE = 1;
                        "<div class='listoflistsitemcount " + itemcountclass + "'>" + item.totalcount + "</div>" +
                        "<div class='listoflistsname " + itemnameclass + "'>" + item.name + "</div>" +
                    "</div>",
-                addHandlers : function(parent) {
-                    $(parent)
-                        .on({
-                            'click':function() {
-                                ShoppingListApp.onListOfListsRowClicked(escape(item.name));
-                            },
-                            'mousedown':function() {
-                                ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
-                            },
-                            'mouseup':function() {
-                                ShoppingListApp.clearLongPressTimeout();
-                            },
-                            'mouseout':function() {
-                                ShoppingListApp.clearLongPressTimeout();
-                            },
-                            'touchstart':function() {
-                                ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
-                            },
-                            'touchend':function() {
-                                ShoppingListApp.clearLongPressTimeout();
-                            },
-                            'touchmove':function() {
-                                ShoppingListApp.clearLongPressTimeout();
-                            },
-                            'touchcancel':function() {
-                                ShoppingListApp.clearLongPressTimeout();
-                            }
-                        },
-                        'div.listoflistsrow' );
+                handlerMap : {
+                  'div.listoflistsrow' : {
+                    'click':function() {
+                      ShoppingListApp.onListOfListsRowClicked(escape(item.name));
+                    },
+                    'mousedown,touchstart':function() {
+                      ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
+                    },
+                    'mouseup,mouseout,touchend,touchmove,touchcancel':function() {
+                      ShoppingListApp.clearLongPressTimeout();
+                    }
+                  }
                 }
             };
 
@@ -699,14 +659,12 @@ var HARDWARE = 1;
                        "<div class='listoflistsitemcount " + itemcountclass + "'>" + item.totalcount + "</div>" +
                        "<div class='listoflistsname " + itemnameclass + "'>" + Localizer.getTranslation("all_my_favorites") + "</div>" +
                    "</div>",
-                addHandlers : function(parent) {
-                    $(parent)
-                        .on({
-                           'click':function() {
-                               ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
-                           }
-                        },
-                        'div.listoflistsrow');
+                handlerMap : {
+                  'div.listoflistsrow' : {
+                    'click':function() {
+                      ShoppingListApp.onListOfListsRowClicked(ShoppingListApp.ALL_KEY);
+                    }
+                  },
                 }
             };
 
@@ -725,6 +683,20 @@ var HARDWARE = 1;
             var itemisfavoriteclass = (item.favorite == 1) ? "itemisfavorite" : "itemisnotfavorite";
             var itemlistindicator = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "<div class='myfavoritesitemlistindicator " + item.color + "'></div>" : "";
             var textpane = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "allmyfavoritesitemtextpane" : "myfavoritesitemtextpane";
+            var handlerMap = {};
+            handlerMap['div.'+textpane] = {
+                    'mousedown, touchstart':function() {
+                      ShoppingListApp.onMouseDownOnItem(item._id,escape(item.name));
+                    },
+                    'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
+                      ShoppingListApp.clearLongPressTimeout();
+                    }
+                  };
+            handlerMap['div.favoritestate'] = {
+                    'click':function() {
+                      MyFavoritesView.onMyFavoritesItemIsFavoriteClicked(this,item._id);
+                    }
+                  };
             var retVal = {
                 innerHTML :
                    "<div class='listitem'>" +
@@ -737,22 +709,7 @@ var HARDWARE = 1;
                         "<img src='" + item.image + "' />" +
                         "<div class='favoritestate " + itemisfavoriteclass + "'>" +
                    "</div>",
-                addHandlers: function(parent) {
-                    $(parent)
-                        .on({
-                            'mousedown, touchstart':function() {
-                                ShoppingListApp.onMouseDownOnItem(item._id,escape(item.name));
-                            },
-                            'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
-                                ShoppingListApp.clearLongPressTimeout();
-                            },
-                        },'div.'+textpane)
-                        .on({
-                            'click':function() {
-                                MyFavoritesView.onMyFavoritesItemIsFavoriteClicked(this,item._id);
-                            }
-                        },'div.favoritestate');
-                }
+                handlerMap : handlerMap
             };
 
             return retVal;
@@ -971,12 +928,17 @@ var HARDWARE = 1;
             for (var i = 0; i < result.length; i++) {
                 var tmp = self.currentView.renderListOfListsItem(result.item(i));
                 self.listoflists.innerHTML += tmp.innerHTML;
-                tmp.addHandlers(self.listoflists);
+                $.each(tmp.handlerMap,function(selector, handlerMap) {
+                    $(listoflists).on(handlerMap,selector)
+                });
 
                 if (result.item(i).name == self.currentKey) {
                     var tmp = self.currentView.populateActiveListPane(result.item(i));
                     self.activelist.innerHTML = tmp.innerHTML;
-                    tmp.addHandlers(self.activelist);
+
+                    $.each(tmp.handlerMap, function(selector, handlerMap) {
+                        $(self.activelist).on(handlerMap,selector);
+                    });
                 }
             }
             self.currentView.populateListOfListsNextPhase();
