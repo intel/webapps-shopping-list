@@ -172,10 +172,10 @@ var HARDWARE = 1;
                     'click':function() {
                       ShoppingListApp.onListOfListsRowClicked(escape(item.name));
                     },
-                    'mousedown,touchstart':function() {
+                    'mousedown touchstart':function() {
                       ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
                     },
-                    'mouseup,mouseout,touchend,touchmove,touchcancel':function() {
+                    'mouseup mouseout touchend touchmove touchcancel':function() {
                       ShoppingListApp.clearLongPressTimeout();
                     }
                   }
@@ -235,10 +235,10 @@ var HARDWARE = 1;
                   }
                 },
                 'div.mylistsitemtextpane' : {
-                  'mousedown,touchstart':function() {
+                  'mousedown touchstart':function() {
                     ShoppingListApp.onMouseDownOnItem(item._id,escape(item.name));
                   },
-                  'mouseup,mouseout,touchend,touchmove,touchcancel':function() {
+                  'mouseup mouseout touchend touchmove touchcancel':function() {
                     ShoppingListApp.clearLongPressTimeout();
                   }
                 },
@@ -315,10 +315,10 @@ var HARDWARE = 1;
                    "<button id='activelistaddnewlistbutton' class='shoppinglistbutton'></button>",
                 handlerMap : {
                   'div.activelistnarrow' : {
-                    'mousedown,touchstart':function() {
+                    'mousedown touchstart':function() {
                       ShoppingListApp.onMouseDownOnStore(escape(item.name));
                     },
-                    'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
+                    'mouseup mouseout touchend touchmove touchcancel':function() {
                       ShoppingListApp.clearLongPressTimeout();
                     },
                     'click':function() {
@@ -408,7 +408,7 @@ var HARDWARE = 1;
                     'mousedown':function() {
                       ShoppingListApp.onMouseDownOnStore(escape(item.name));
                     },
-                    'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
+                    'mouseup mouseout touchend touchmove touchcancel':function() {
                       ShoppingListApp.clearLongPressTimeout();
                     },
                     'touchstart':function() {
@@ -478,10 +478,10 @@ var HARDWARE = 1;
                     }
                   },
                   'div.mystoresitemtextpane' : {
-                    'mousedown, touchstart':function() {
+                    'mousedown touchstart':function() {
                       ShoppingListApp.onMouseDownOnItem(item._id,escape(item.name));
                     },
-                    'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
+                    'mouseup mouseout touchend touchmove touchcancel':function() {
                       ShoppingListApp.clearLongPressTimeout();
                     }
                   },
@@ -560,11 +560,11 @@ var HARDWARE = 1;
                 'click':function() {
                   ShoppingListApp.onListOfListsRowClicked(escape(item.name));
                 },
-                'mousedown, touchstart':function() {
+                'mousedown touchstart':function() {
                   ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
                   ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
                 },
-                'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
+                'mouseup mouseout touchend touchmove touchcancel':function() {
                   ShoppingListApp.clearLongPressTimeout();
                 }
               },
@@ -637,10 +637,10 @@ var HARDWARE = 1;
                     'click':function() {
                       ShoppingListApp.onListOfListsRowClicked(escape(item.name));
                     },
-                    'mousedown,touchstart':function() {
+                    'mousedown touchstart':function() {
                       ShoppingListApp.onMouseDownOnList(escape(item.name),item.color);
                     },
-                    'mouseup,mouseout,touchend,touchmove,touchcancel':function() {
+                    'mouseup mouseout touchend touchmove touchcancel':function() {
                       ShoppingListApp.clearLongPressTimeout();
                     }
                   }
@@ -685,10 +685,10 @@ var HARDWARE = 1;
             var textpane = (ShoppingListApp.currentKey === ShoppingListApp.ALL_KEY) ? "allmyfavoritesitemtextpane" : "myfavoritesitemtextpane";
             var handlerMap = {};
             handlerMap['div.'+textpane] = {
-                    'mousedown, touchstart':function() {
+                    'mousedown touchstart':function() {
                       ShoppingListApp.onMouseDownOnItem(item._id,escape(item.name));
                     },
-                    'mouseup, mouseout, touchend, touchmove, touchcancel':function() {
+                    'mouseup mouseout touchend touchmove touchcancel':function() {
                       ShoppingListApp.clearLongPressTimeout();
                     }
                   };
@@ -927,18 +927,30 @@ var HARDWARE = 1;
 
             for (var i = 0; i < result.length; i++) {
                 var tmp = self.currentView.renderListOfListsItem(result.item(i));
-                self.listoflists.innerHTML += tmp.innerHTML;
+
+                var $element = $(tmp.innerHTML);
+
+                // add event handlers
                 $.each(tmp.handlerMap,function(selector, handlerMap) {
-                    $(listoflists).on(handlerMap,selector)
+                  var $selectedElement = $($element,selector);
+                  $selectedElement.on(handlerMap);
                 });
+
+                // append to listoflists
+                $(self.listoflists).append($element);
 
                 if (result.item(i).name == self.currentKey) {
                     var tmp = self.currentView.populateActiveListPane(result.item(i));
-                    self.activelist.innerHTML = tmp.innerHTML;
+                    var $element = $(tmp.innerHTML);
 
+                    // add event handlers
                     $.each(tmp.handlerMap, function(selector, handlerMap) {
-                        $(self.activelist).on(handlerMap,selector);
+                      var $selectedElement = $($element,selector);
+                      $selectedElement.on(handlerMap);
                     });
+
+                    // set html of activelist
+                    $(self.activelist).html($element);
                 }
             }
             self.currentView.populateListOfListsNextPhase();
