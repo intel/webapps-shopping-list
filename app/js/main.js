@@ -932,7 +932,10 @@ var HARDWARE = 1;
 
                 // add event handlers
                 $.each(tmp.handlerMap,function(selector, handlerMap) {
-                  var $selectedElement = $($element,selector);
+                  var $selectedElement = $element.find(selector).addBack(selector);
+                  if ($selectedElement.length==0) {
+                    console.log("Error:"+selector+" did not match any elements in tree, so event handler(s) won't attach");
+                  }
                   $selectedElement.on(handlerMap);
                 });
 
@@ -945,7 +948,10 @@ var HARDWARE = 1;
 
                     // add event handlers
                     $.each(tmp.handlerMap, function(selector, handlerMap) {
-                      var $selectedElement = $($element,selector);
+                      var $selectedElement = $element.find(selector).addBack(selector);
+                      if ($selectedElement.length==0) {
+                        console.log("Error:"+selector+" did not match any elements in tree, so event handler(s) won't attach");
+                      }
                       $selectedElement.on(handlerMap);
                     });
 
@@ -960,12 +966,26 @@ var HARDWARE = 1;
         // Render the current list of the currently active view, with data obtained from a database query.
         //
         self.populateCurrentListCallback = function(result) {
-            self.currentlist.innerHTML = "";
+            var $currentList = $(self.currentlist);
+            $currentList.empty();
+
             self.sortbyMethod.resetHeading();
 
             for (var i = 0; i < result.length; i++) {
-                self.currentlist.innerHTML += self.sortbyMethod.renderCurrentListHeading(result.item(i));
-                self.currentlist.innerHTML += self.currentView.renderCurrentListItem(result.item(i));
+                var itemObject = self.currentView.renderCurrentListItem(result.item(i));
+                var $listItem = $(itemObject.innerHTML);
+
+                // add event handlers
+                $.each(itemObject.handlerMap, function(selector,handlerMap) {
+                  var $selectedElement = $listItem.find(selector).addBack(selector);
+                  if ($selectedElement.length==0) {
+                    console.log("Error:"+selector+" did not match any elements in tree, so event handler(s) won't attach");
+                  }
+                  $selectedElement.on(handlerMap);
+                });
+
+                $currentList.append( self.sortbyMethod.renderCurrentListHeading(result.item(i)) );
+                $currentList.append( $listItem );
             }
             self.currentlistscroll.refresh();
 
