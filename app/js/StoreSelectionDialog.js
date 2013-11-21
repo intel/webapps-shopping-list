@@ -30,7 +30,7 @@ MyStoreSelectionDialog = new function() {
             $('#listofstores-popup-pane').removeClass("dragging");
         }
     };
-    
+
     self.initOnLoad = function() {
         document.getElementById('storeselection_title').innerHTML = Localizer.getTranslation("storeselection_title");
         document.getElementById('storeselection_close_button').onclick = function() {
@@ -61,7 +61,7 @@ MyStoreSelectionDialog = new function() {
             showInfoDialog(Localizer.getTranslation("database_error"));
             return;
         }
-    
+
         if (dataset.length < 1) {
             self.hide();
             showInfoDialog(Localizer.getTranslation("stores_not_available"));
@@ -72,9 +72,8 @@ MyStoreSelectionDialog = new function() {
         self.totalListItems = dataset.length;
         for (var i = 0, item = null; i < dataset.length; i++) {
             item = dataset.item(i);
-            content +=
-                "<div class='listitem'>" +
-                    "<a onclick='MyStoreSelectionDialog.storeitemClicked(\"" + escape(item.name) + "\")'>" +
+            content += "<div class='listitem'>" +
+                    "<a data-name='" + item.name + "'>" +
                         "<label>" +  item.name + "</label>" +
                     "</a>" +
                     "<img src='' class='listitem_divider' />" +
@@ -83,16 +82,24 @@ MyStoreSelectionDialog = new function() {
 
         if (self.showViewAll) {
             self.totalListItems++;
-            content +=
-                "<div class='listitem'>" +
-                    "<a onclick='MyStoreSelectionDialog.storeitemClicked(" + ShoppingListApp.ALL_KEY + ")'>" +
+            content += "<div class='listitem'>" +
+                    "<a data-name='" + item.name + "'>" +
                         "<label>" +  "View All" + "</label>" +
                     "</a>" +
                     "<img src='' class='listitem_divider' />" +
                 "</div>";
         }
-    
-        document.getElementById("listofstores-popup").innerHTML = content;
+
+        $("#listofstores-popup")
+          .html(content)
+          .on({
+            "click" : function() {
+                var $anchor = $(this);
+                var name = $anchor.attr("data-name");
+                MyStoreSelectionDialog.storeitemClicked(escape(name));
+            }
+          },"a");
+
         self.updateStyles();
         self.show();
     }
@@ -113,7 +120,7 @@ MyStoreSelectionDialog = new function() {
 
         var dialogElement = document.getElementById('storeselection-dialog');
         var listspaneElement = document.getElementById('listofstores-popup-pane');
-    
+
         var viewSize = Helper.getViewSize();
 
         if(Helper.isLandscape()) {
@@ -138,7 +145,7 @@ MyStoreSelectionDialog = new function() {
                 dialogElement.style.top = (viewSize.height - ((self.totalListItems * 116) + 6 + 6 + 112))/2 + "px";
             }
         }
-        
+
         self.listofstoresPopupScroll.refresh();
     }
 

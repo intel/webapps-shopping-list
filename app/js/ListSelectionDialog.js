@@ -63,7 +63,7 @@ MyListSelectionDialog = new function() {
             showInfoDialog(Localizer.getTranslation("database_error"));
             return;
         }
-    
+
         if (dataset.length < 1) {
             self.hide();
             showInfoDialog(Localizer.getTranslation("lists_not_available"));
@@ -74,9 +74,8 @@ MyListSelectionDialog = new function() {
         self.totalListItems = dataset.length;
         for (var i = 0, item = null; i < dataset.length; i++) {
             item = dataset.item(i);
-            content +=
-                "<div class='listitem'>" +
-                    "<a onclick='MyListSelectionDialog.listitemClicked(\"" + escape(item.name) + "\", \"" + item.color + "\")'>" +
+            content += "<div class='listitem'>" +
+                    "<a data-name='"+item.name+"' data-color='"+item.color+"'>" +
                         "<img src='' class='color_box " + item.color + "'/>" +
                         "<label>" +  item.name + "</label>" +
                     "</a>" +
@@ -86,9 +85,8 @@ MyListSelectionDialog = new function() {
 
         if (self.showViewAll) {
             self.totalListItems++;
-            content +=
-                "<div class='listitem'>" +
-                    "<a onclick='MyListSelectionDialog.listitemClicked(" + ShoppingListApp.ALL_KEY + ", \"" + "green_2" + "\")'>" + // TODO - localize
+            content += "<div class='listitem'>" +
+                    "<a data-name='"+item.name+"' data-color='"+item.color+"'>" +
                         "<img src='' class='color_box " + "green_2" + "'/>" +
                         "<label>" +  "View All" + "</label>" +
                     "</a>" +
@@ -96,7 +94,17 @@ MyListSelectionDialog = new function() {
                 "</div>";
         }
 
-        document.getElementById("listoflists-popup").innerHTML = content;
+        $("#listoflists-popup")
+          .html(content)
+          .on({
+            "click" : function() {
+                var $anchor = $(this);
+                var name = $anchor.attr("data-name");
+                var color = $anchor.attr("data-color");
+                MyListSelectionDialog.listitemClicked(escape(name),color);
+            }
+          },"a");
+
         self.updateStyles();
         self.show();
     }
@@ -117,9 +125,9 @@ MyListSelectionDialog = new function() {
 
         var dialogElement = document.getElementById('listselection-dialog');
         var listspaneElement = document.getElementById('listoflists-popup-pane');
-    
+
         var viewSize = Helper.getViewSize();
-    
+
         if(Helper.isLandscape()) {
             dialogElement.setAttribute("class", "landscape");
             if(self.totalListItems > 5) {
@@ -142,7 +150,7 @@ MyListSelectionDialog = new function() {
                 dialogElement.style.top = (viewSize.height - ((self.totalListItems * 116) + 6 + 6 + 112))/2 + "px";
             }
         }
-        
+
         self.listoflistsPopupScroll.refresh();
     }
 
