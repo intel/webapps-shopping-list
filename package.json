@@ -1,6 +1,6 @@
 {
   "name": "ShoppingList",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Shopping List.",
   "main": "app/index.html",
   "scripts": {
