@@ -922,7 +922,7 @@ var HARDWARE = 1;
 
         self.populateListOfListsCallback = function(result) {
             if (self.currentView.resetListOfLists) {
-                ShoppingListApp.listoflists.innerHTML = "";
+                $(ShoppingListApp.listoflists).empty();
             }
 
             for (var i = 0; i < result.length; i++) {
