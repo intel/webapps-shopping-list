@@ -845,9 +845,9 @@ var HARDWARE = 1;
             self.buttonClick01Audio = new Audio();
             self.buttonClick01Audio.src = "./audio/ButtonClick_01.ogg";
             self.buttonClick02Audio = new Audio();
-            self.buttonClick02Audio.src = "./audio/ButtonClick_01.ogg";
+            self.buttonClick02Audio.src = "./audio/ButtonClick_02.ogg";
             self.buttonClick03Audio = new Audio();
-            self.buttonClick03Audio.src = "./audio/ButtonClick_01.ogg";
+            self.buttonClick03Audio.src = "./audio/ButtonClick_03.ogg";
 
             // Localize static HTML elements.
             document.getElementById("searchinput").placeholder = Localizer.getTranslation("enter_keyword");
